@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,6 +20,11 @@ public class Movie {
     private Date dateOfRelease;
     private int restrictions;
     private String description;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "session_movie",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "session_id"))
+    private List<CinemaSession> sessions;
 
     public Movie(String title, Date dateOfRelease, int restrictions, String description) {
         this.title = title;
@@ -26,4 +32,6 @@ public class Movie {
         this.restrictions = restrictions;
         this.description = description;
     }
+
+
 }
