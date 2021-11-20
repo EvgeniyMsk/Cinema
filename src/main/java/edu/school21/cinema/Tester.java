@@ -13,8 +13,8 @@ public class Tester {
     public static void main(String[] args) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CinemaUnit");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-//        MovieHall movieHall = new MovieHall(100);
-//        Movie movie = new Movie("Очень страшное кино", new Date(), 18, "Комедия");
+        MovieHall movieHall = new MovieHall(100);
+        Movie movie = new Movie("Очень страшное кино", new Date(), 18, "Комедия");
 //        CinemaSession cinemaSession = new CinemaSession(movieHall, movie, new Date(100), 540);
 //        CinemaSession cinemaSession1 = new CinemaSession(movieHall, movie, new Date(200), 700);
 //        entityManager.getTransaction().begin();

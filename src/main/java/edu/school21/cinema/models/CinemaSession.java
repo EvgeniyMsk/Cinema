@@ -4,9 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -17,13 +15,13 @@ public class CinemaSession {
     private Long id;
     private Date date;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinTable(name = "session_moviehall",
     joinColumns = @JoinColumn(name = "session_id"),
     inverseJoinColumns = @JoinColumn(name = "moviehall_id"))
     private MovieHall movieHall;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinTable(name = "session_movie",
             joinColumns = @JoinColumn(name = "session_id"),
             inverseJoinColumns = @JoinColumn(name = "movie_id"))

@@ -9,5 +9,6 @@ import java.util.List;
 public interface CinemaSessionRepository {
     List<CinemaSession> getAll();
     CinemaSession getCinemaSessionById(Long id);
-    void removeCinemaSession(CinemaSession session);
+    void createCinemaSession(CinemaSession cinemaSession);
+    void removeCinemaSession(CinemaSession cinemaSession);
 }
