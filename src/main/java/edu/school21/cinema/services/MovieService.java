@@ -1,11 +1,12 @@
-package edu.school21.cinema.repositories;
+package edu.school21.cinema.services;
 
 import edu.school21.cinema.models.Movie;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-@Repository
-public interface MovieRepository {
+@Service
+public interface MovieService {
     List<Movie> getAll();
     Movie getMovieById(Long id);
     void createMovie(Movie movie);

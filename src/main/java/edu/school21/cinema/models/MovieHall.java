@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -16,12 +17,10 @@ public class MovieHall {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int seatsCount;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "session_moviehall",
-            joinColumns = @JoinColumn(name = "moviehall_id"),
-            inverseJoinColumns = @JoinColumn(name = "session_id"))
+    @OneToMany(mappedBy = "movieHall", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<CinemaSession> sessionList;
     public MovieHall(int seatsCount) {
         this.seatsCount = seatsCount;
+        this.sessionList = new ArrayList<>();
     }
 }

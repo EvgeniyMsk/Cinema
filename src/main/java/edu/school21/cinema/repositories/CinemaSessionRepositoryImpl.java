@@ -1,6 +1,7 @@
 package edu.school21.cinema.repositories;
 
 import edu.school21.cinema.models.CinemaSession;
+import edu.school21.cinema.models.MovieHall;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +31,13 @@ public class CinemaSessionRepositoryImpl implements CinemaSessionRepository{
     }
 
     @Override
-    public void removeCinemaSession(CinemaSession cinemaSession) {
-        CinemaSession temp = entityManager.find(CinemaSession.class, cinemaSession.getId());
-        if (temp != null)
-            entityManager.remove(cinemaSession);
+    public void updateCinemaSession(CinemaSession cinemaSession) {
+        entityManager.merge(cinemaSession);
+    }
+
+    @Override
+    public void deleteCinemaSession(CinemaSession cinemaSession) {
+        CinemaSession persistentInstance = entityManager.merge(cinemaSession);
+        entityManager.remove(persistentInstance);
     }
 }

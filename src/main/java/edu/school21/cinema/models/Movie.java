@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,21 +18,17 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private Date dateOfRelease;
+    private String dateOfRelease;
     private int restrictions;
     private String description;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "session_movie",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "session_id"))
+    @OneToMany(mappedBy = "movie",fetch = FetchType.EAGER, orphanRemoval = true)
     private List<CinemaSession> sessions;
 
-    public Movie(String title, Date dateOfRelease, int restrictions, String description) {
+    public Movie(String title, String dateOfRelease, int restrictions, String description) {
         this.title = title;
         this.dateOfRelease = dateOfRelease;
         this.restrictions = restrictions;
         this.description = description;
+        this.sessions = new ArrayList<>();
     }
-
-
 }

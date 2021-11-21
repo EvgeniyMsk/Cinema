@@ -13,22 +13,16 @@ public class CinemaSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date date;
+    private String date;
 
-    @ManyToOne
-    @JoinTable(name = "session_moviehall",
-    joinColumns = @JoinColumn(name = "session_id"),
-    inverseJoinColumns = @JoinColumn(name = "moviehall_id"))
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private MovieHall movieHall;
 
-    @ManyToOne
-    @JoinTable(name = "session_movie",
-            joinColumns = @JoinColumn(name = "session_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Movie movie;
     private int ticketCost;
 
-    public CinemaSession(MovieHall movieHall, Movie movie, Date date, int ticketCost) {
+    public CinemaSession(MovieHall movieHall, Movie movie, String date, int ticketCost) {
         this.movieHall = movieHall;
         this.movie = movie;
         this.date = date;

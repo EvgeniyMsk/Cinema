@@ -1,5 +1,6 @@
 package edu.school21.cinema.repositories;
 
+import edu.school21.cinema.models.CinemaSession;
 import edu.school21.cinema.models.Movie;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -27,8 +27,7 @@ public class MovieRepositoryImpl implements MovieRepository{
     }
 
     @Override
-    public void createMovie(String title, Date dateOfRelease, int restrictions, String description) {
-        Movie movie = new Movie(title, dateOfRelease, restrictions, description);
+    public void createMovie(Movie movie) {
         entityManager.persist(movie);
     }
 
@@ -40,9 +39,8 @@ public class MovieRepositoryImpl implements MovieRepository{
     }
 
     @Override
-    public void deleteMovie(Long id) {
-        Movie temp = entityManager.find(Movie.class, id);
-        if (temp != null)
-            entityManager.remove(temp);
+    public void deleteMovie(Movie movie) {
+        Movie persistentInstance = entityManager.merge(movie);
+        entityManager.remove(persistentInstance);
     }
 }

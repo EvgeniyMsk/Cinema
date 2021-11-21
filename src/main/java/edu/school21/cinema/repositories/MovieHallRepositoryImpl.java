@@ -26,8 +26,8 @@ public class MovieHallRepositoryImpl implements MovieHallRepository{
     }
 
     @Override
-    public void createMovieHall(int seatsCount) {
-        entityManager.persist(new MovieHall(seatsCount));
+    public void createMovieHall(MovieHall movieHall) {
+        entityManager.persist(movieHall);
     }
 
     @Override
@@ -38,9 +38,8 @@ public class MovieHallRepositoryImpl implements MovieHallRepository{
     }
 
     @Override
-    public void deleteMovieHall(Long id) {
-        MovieHall temp = entityManager.find(MovieHall.class, id);
-        if (temp != null)
-            entityManager.remove(temp);
+    public void deleteMovieHall(MovieHall movieHall) {
+        MovieHall persistentInstance = entityManager.merge(movieHall);
+        entityManager.remove(persistentInstance);
     }
 }
