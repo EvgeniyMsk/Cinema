@@ -33,8 +33,10 @@ public class MovieHallRepositoryImpl implements MovieHallRepository{
     @Override
     public void updateMovieHall(MovieHall movieHall) {
         MovieHall temp = entityManager.find(MovieHall.class, movieHall.getId());
-        if (temp != null)
+        if (temp != null) {
+            movieHall.setSessionList(temp.getSessionList());
             entityManager.merge(movieHall);
+        }
     }
 
     @Override

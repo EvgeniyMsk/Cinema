@@ -9,7 +9,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%request.setCharacterEncoding("UTF-8");%>
 <html>
 <head>
     <title>Title</title>
@@ -52,7 +51,7 @@ Films
                         ${iterMovie.title}
                 </td>
                 <td>
-                        ${iterMovie.dateOfRelease}
+                        ${iterMovie.dateOfRelease.toLocaleString().split(" ")[0]}
                 </td>
                 <td>
                         ${iterMovie.restrictions}
@@ -80,7 +79,7 @@ Films
         <form:label path="title">Название</form:label>
         <form:input path="title"></form:input>
         <form:label path="dateOfRelease">Дата выпуска</form:label>
-        <form:input path="dateOfRelease"></form:input>
+        <input type="date" pattern="yyyy-MM-dd" name="releaseDate" required>
         <form:label path="restrictions">Ограничения по возрасту</form:label>
         <form:input path="restrictions"></form:input>
         <form:label path="description">Описание</form:label>

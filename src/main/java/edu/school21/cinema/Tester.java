@@ -15,8 +15,8 @@ public class Tester {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         MovieHall movieHall = new MovieHall(100);
         MovieHall movieHall1 = new MovieHall(200);
-        Movie movie = new Movie("Очень страшное кино", "12.01.2021", 18, "Комедия");
-        Movie movie1 = new Movie("Mortal Combat", "31.12.2020", 18, "Боевик");
+        Movie movie = new Movie("Очень страшное кино", new Date(), 18, "Комедия");
+        Movie movie1 = new Movie("Mortal Combat", new Date(), 18, "Боевик");
         CinemaSession cinemaSession = new CinemaSession(movieHall, movie, "21.11.2021", 540);
         CinemaSession cinemaSession1 = new CinemaSession(movieHall1, movie1, "22.12.2021", 700);
         entityManager.getTransaction().begin();

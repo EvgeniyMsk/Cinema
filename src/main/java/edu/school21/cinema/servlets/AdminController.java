@@ -10,11 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Locale;
 
 
 @Controller
@@ -68,16 +75,17 @@ public class AdminController {
 
 //    Movies
     @GetMapping("/admin/films")
-    public String films(Model model, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-        response.setContentType("text/html");
-        request.setCharacterEncoding("UTF-8");
+    public String films(Model model, HttpServletRequest request, HttpServletResponse response) {
         model.addAttribute("movies", movieService.getAll());
         model.addAttribute("movie", new Movie());
         return "/admin/films";
     }
 
     @PostMapping("/admin/films")
-    public String addFilms(@ModelAttribute ("movie") Movie movie) {
+    public String addFilms(@ModelAttribute ("movie") Movie movie, @ModelAttribute("releaseDate") String dateOfRelease) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Date date = formatter.parse(dateOfRelease);
+        movie.setDateOfRelease(date);
         movieService.createMovie(movie);
         return "redirect:/admin/films";
     }
@@ -103,7 +111,11 @@ public class AdminController {
     }
 
     @PostMapping("/admin/films/{id}/update")
-    public String updateMovies(@PathVariable("id") String id, @ModelAttribute ("movie") Movie movie) {
+    public String updateMovies(@PathVariable("id") String id, @ModelAttribute ("movie") Movie movie,
+                               @ModelAttribute("releaseDate") String dateOfRelease) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Date date = formatter.parse(dateOfRelease);
+        movie.setDateOfRelease(date);
         movieService.updateMovie(movie);
         return "redirect:/admin/films";
     }
@@ -113,6 +125,8 @@ public class AdminController {
     public String cinemaSessions(Model model) {
         model.addAttribute("cinemaSessions", cinemaSessionService.getAll());
         model.addAttribute("cinemaSession", new CinemaSession());
+        model.addAttribute("movies", movieService.getAll());
+        model.addAttribute("movieHalls", movieHallService.getAll());
         return "/admin/sessions";
     }
 

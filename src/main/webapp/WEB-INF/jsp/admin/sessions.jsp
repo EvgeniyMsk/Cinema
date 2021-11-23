@@ -73,7 +73,11 @@ Sessions
         <form:label path="date">Дата</form:label>
         <form:input path="date"></form:input>
         <form:label path="movieHall">Кинозал</form:label>
-        <form:input path="movieHall"></form:input>
+        <form:select path="movieHall">
+            <c:forEach items="${movieHalls}" var="iterMovieHall">
+                <form:option value="Зал №${iterMovieHall.id}, ${iterMovieHall.seatsCount} посадочных мест"></form:option>
+            </c:forEach>
+        </form:select>
         <form:label path="movie">Название фильма</form:label>
         <form:input path="movie"></form:input>
         <form:label path="ticketCost">Цена билета</form:label>

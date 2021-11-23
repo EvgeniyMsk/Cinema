@@ -34,13 +34,15 @@ public class MovieRepositoryImpl implements MovieRepository{
     @Override
     public void updateMovie(Movie movie) {
         Movie temp = entityManager.find(Movie.class, movie.getId());
-        if (temp != null)
+        if (temp != null) {
+            movie.setSessions(temp.getSessions());
             entityManager.merge(movie);
+        }
     }
 
     @Override
     public void deleteMovie(Movie movie) {
-        Movie persistentInstance = entityManager.merge(movie);
+        Movie persistentInstance = entityManager.find(Movie.class, movie.getId());
         entityManager.remove(persistentInstance);
     }
 }
