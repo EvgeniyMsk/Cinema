@@ -71,7 +71,7 @@ Sessions
 <div class="addCinemaSessions">
     <form:form method="post" action="/admin/sessions" modelAttribute="cinemaSession">
         <form:label path="date">Дата</form:label>
-        <form:input path="date"></form:input>
+        <input type="datetime-local" pattern="yyyy-MM-dd" name="releaseDate" required>
         <form:label path="movieHall">Кинозал</form:label>
         <form:select path="movieHall">
             <c:forEach items="${movieHalls}" var="iterMovieHall">
@@ -79,7 +79,11 @@ Sessions
             </c:forEach>
         </form:select>
         <form:label path="movie">Название фильма</form:label>
-        <form:input path="movie"></form:input>
+        <form:select path="movie">
+            <c:forEach items="${movies}" var="iterMovie">
+                <form:option value="${iterMovie.title}"></form:option>
+            </c:forEach>
+        </form:select>
         <form:label path="ticketCost">Цена билета</form:label>
         <form:input path="ticketCost"></form:input>
         <button type="submit">Добавить</button>
