@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -13,16 +14,16 @@ public class CinemaSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String date;
+    private LocalDateTime date;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     private MovieHall movieHall;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     private Movie movie;
     private int ticketCost;
 
-    public CinemaSession(MovieHall movieHall, Movie movie, String date, int ticketCost) {
+    public CinemaSession(MovieHall movieHall, Movie movie, LocalDateTime date, int ticketCost) {
         this.movieHall = movieHall;
         this.movie = movie;
         this.date = date;

@@ -1,5 +1,6 @@
 package edu.school21.cinema.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,8 @@ public class MovieHall {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int seatsCount;
-    @OneToMany(mappedBy = "movieHall", fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(mappedBy = "movieHall", cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<CinemaSession> sessionList;
     public MovieHall(int seatsCount) {
         this.seatsCount = seatsCount;

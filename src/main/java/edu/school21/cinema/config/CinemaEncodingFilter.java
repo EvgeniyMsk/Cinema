@@ -6,7 +6,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
-@WebFilter("/*")
+@WebFilter("/admin/*")
 public class CinemaEncodingFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

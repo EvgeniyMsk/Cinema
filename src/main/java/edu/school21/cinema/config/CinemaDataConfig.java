@@ -21,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.sql.DataSource;
+import java.io.File;
 
 
 @Configuration
@@ -28,6 +29,9 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @PropertySource("classpath:../application.properties")
 public class CinemaDataConfig {
+    @Value("${defaultImage}")
+    private String defaultImage;
+
     @Bean()
     public EntityManagerFactory entityManagerFactory() {
         return Persistence.createEntityManagerFactory("CinemaUnit");
@@ -43,5 +47,10 @@ public class CinemaDataConfig {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
+    }
+
+    @Bean()
+    public File defaultImage() {
+        return new File(defaultImage);
     }
 }

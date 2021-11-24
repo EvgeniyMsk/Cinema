@@ -27,9 +27,6 @@ Halls
             Количество посадочных мест
         </th>
         <th>
-            Сеансы
-        </th>
-        <th>
             Редактировать
         </th>
         </tr>
@@ -40,9 +37,6 @@ Halls
             </td>
             <td>
                 ${iterMovieHall.seatsCount}
-            </td>
-            <td>
-                ${iterMovieHall.sessionList}
             </td>
             <td>
                 <a href="/admin/halls/${iterMovieHall.id}">Редактировать</a>

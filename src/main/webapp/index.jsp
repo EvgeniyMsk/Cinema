@@ -11,8 +11,9 @@
     <title>Title</title>
 </head>
 <body>
-<a href="/admin/halls">Halls</a>
-<a href="/admin/films">Films</a>
-<a href="/admin/sessions">Sessions</a>
+<a href="/admin/halls">Кинозалы</a>
+<a href="/admin/films">Фильмы</a>
+<a href="/admin/sessions">Сеансы</a>
+<a href="/sessions">Поиск по киносеансам</a>
 </body>
 </html>

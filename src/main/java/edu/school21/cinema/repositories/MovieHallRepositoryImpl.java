@@ -27,7 +27,7 @@ public class MovieHallRepositoryImpl implements MovieHallRepository{
 
     @Override
     public void createMovieHall(MovieHall movieHall) {
-        entityManager.persist(movieHall);
+        entityManager.merge(movieHall);
     }
 
     @Override

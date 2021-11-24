@@ -12,4 +12,5 @@ public interface CinemaSessionRepository {
     void createCinemaSession(CinemaSession cinemaSession);
     void updateCinemaSession(CinemaSession cinemaSession);
     void deleteCinemaSession(CinemaSession cinemaSession);
+    List<CinemaSession> findCinemaSessionByText(String text);
 }

@@ -1,8 +1,10 @@
 package edu.school21.cinema.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,7 +23,11 @@ public class Movie {
     private Date dateOfRelease;
     private int restrictions;
     private String description;
-    @OneToMany(mappedBy = "movie",fetch = FetchType.EAGER, orphanRemoval = true)
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
+    public byte[] imageBytes;
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonIgnore
     private List<CinemaSession> sessions;
 
     public Movie(String title, Date dateOfRelease, int restrictions, String description) {

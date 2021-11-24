@@ -36,4 +36,9 @@ public class CinemaSessionServiceImpl implements CinemaSessionService {
     public void deleteCinemaSession(CinemaSession cinemaSession) {
         cinemaSessionRepository.deleteCinemaSession(cinemaSession);
     }
+
+    @Override
+    public List<CinemaSession> findCinemaSessionByText(String text) {
+        return cinemaSessionRepository.findCinemaSessionByText(text);
+    }
 }

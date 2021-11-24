@@ -10,17 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -75,26 +75,43 @@ public class AdminController {
 
 //    Movies
     @GetMapping("/admin/films")
-    public String films(Model model, HttpServletRequest request, HttpServletResponse response) {
+    public String films(Model model, HttpServletRequest request) {
         model.addAttribute("movies", movieService.getAll());
         model.addAttribute("movie", new Movie());
+        request.setAttribute("movies", movieService.getAll());
+        List<Boolean> hasImage = new ArrayList<>();
+        for (Movie movie : movieService.getAll())
+            if (movie.imageBytes.length > 0)
+                hasImage.add(true);
+            else
+                hasImage.add(false);
+            request.setAttribute("hasImages", hasImage);
         return "/admin/films";
     }
 
     @PostMapping("/admin/films")
-    public String addFilms(@ModelAttribute ("movie") Movie movie, @ModelAttribute("releaseDate") String dateOfRelease) throws ParseException {
+    public String addFilms(@ModelAttribute ("movie") Movie movie,
+                           @ModelAttribute("releaseDate") String dateOfRelease,
+                           @RequestParam("file")MultipartFile file,
+                           HttpServletRequest request) throws ParseException, IOException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = formatter.parse(dateOfRelease);
         movie.setDateOfRelease(date);
+        movie.setImageBytes(file.getBytes());
         movieService.createMovie(movie);
         return "redirect:/admin/films";
     }
 
     @GetMapping("/admin/films/{id}")
-    public String editMovies(@PathVariable("id") String id, Model model) {
+    public String editMovies(@PathVariable("id") String id, Model model, HttpServletRequest request) {
         try {
             if (movieService.getMovieById(Long.parseLong(id)) != null) {
                 model.addAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
+                request.setAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
+                if (movieService.getMovieById(Long.parseLong(id)).imageBytes.length > 0)
+                    request.setAttribute("hasImage", true);
+                else
+                    request.setAttribute("hasImage", false);
                 return "/admin/showFilm";
             }
             return "redirect:/admin/films";
@@ -111,11 +128,18 @@ public class AdminController {
     }
 
     @PostMapping("/admin/films/{id}/update")
-    public String updateMovies(@PathVariable("id") String id, @ModelAttribute ("movie") Movie movie,
-                               @ModelAttribute("releaseDate") String dateOfRelease) throws ParseException {
+    public String updateMovies(@PathVariable("id") String id,
+                               @ModelAttribute ("movie") Movie movie,
+                               @ModelAttribute("releaseDate") String dateOfRelease,
+                               @RequestParam("file")MultipartFile file,
+                               HttpServletRequest request) throws ParseException, IOException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = formatter.parse(dateOfRelease);
         movie.setDateOfRelease(date);
+        if (file.getBytes().length == 0)
+            movie.setImageBytes(movieService.getMovieById(Long.parseLong(id)).getImageBytes());
+        else
+        movie.setImageBytes(file.getBytes());
         movieService.updateMovie(movie);
         return "redirect:/admin/films";
     }
@@ -131,7 +155,20 @@ public class AdminController {
     }
 
     @PostMapping("/admin/sessions")
-    public String addCinemaSession(@ModelAttribute ("cinemaSession") CinemaSession cinemaSession) {
+    public String addCinemaSession(@ModelAttribute("sessionDateTime") String sessionDateTime,
+                                   @ModelAttribute("movieHallId") String movieHallId,
+                                   @ModelAttribute("movieId") String movieId,
+                                   @ModelAttribute("ticketCost") String ticketCost) throws ParseException {
+        String[] data = sessionDateTime.split("T");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(data[0]);
+        stringBuilder.append(" ");
+        stringBuilder.append(data[1]);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ENGLISH);
+        LocalDateTime localDateTime = LocalDateTime.parse(stringBuilder, formatter);
+        MovieHall movieHall = movieHallService.getMovieHallById(Long.parseLong(movieHallId));
+        Movie movie = movieService.getMovieById(Long.parseLong(movieId));
+        CinemaSession cinemaSession = new CinemaSession(movieHall, movie, localDateTime, Integer.parseInt(ticketCost));
         cinemaSessionService.createCinemaSession(cinemaSession);
         return "redirect:/admin/sessions";
     }
@@ -141,6 +178,8 @@ public class AdminController {
         try {
             if (cinemaSessionService.getCinemaSessionById(Long.parseLong(id)) != null) {
                 model.addAttribute("cinemaSession", cinemaSessionService.getCinemaSessionById(Long.parseLong(id)));
+                model.addAttribute("movies", movieService.getAll());
+                model.addAttribute("movieHalls", movieHallService.getAll());
                 return "/admin/showSession";
             }
             return "redirect:/admin/sessions";
@@ -157,7 +196,23 @@ public class AdminController {
     }
 
     @PostMapping("/admin/sessions/{id}/update")
-    public String updateCinemaSessions(@PathVariable("id") String id, @ModelAttribute ("cinemaSession") CinemaSession cinemaSession) {
+    public String updateCinemaSessions(@PathVariable("id") String id,
+                                       @ModelAttribute ("cinemaSessionDateTime") String cinemaSessionDateTime,
+                                       @ModelAttribute ("movieHallId") String movieHallId,
+                                       @ModelAttribute ("movieId") String movieId,
+                                       @ModelAttribute ("ticketCost") String ticketCost) {
+        String[] data = cinemaSessionDateTime.split("T");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(data[0]);
+        stringBuilder.append(" ");
+        stringBuilder.append(data[1]);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ENGLISH);
+        LocalDateTime localDateTime = LocalDateTime.parse(stringBuilder, formatter);
+        CinemaSession cinemaSession = cinemaSessionService.getCinemaSessionById(Long.parseLong(id));
+        cinemaSession.setDate(localDateTime);
+        cinemaSession.setMovie(movieService.getMovieById(Long.parseLong(movieId)));
+        cinemaSession.setMovieHall(movieHallService.getMovieHallById(Long.parseLong(movieHallId)));
+        cinemaSession.setTicketCost(Integer.parseInt(ticketCost));
         cinemaSessionService.updateCinemaSession(cinemaSession);
         return "redirect:/admin/sessions";
     }

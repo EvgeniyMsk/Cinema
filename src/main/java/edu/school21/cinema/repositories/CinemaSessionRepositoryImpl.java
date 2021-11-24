@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Repository
 @Transactional
@@ -27,7 +29,7 @@ public class CinemaSessionRepositoryImpl implements CinemaSessionRepository{
 
     @Override
     public void createCinemaSession(CinemaSession cinemaSession) {
-        entityManager.persist(cinemaSession);
+        entityManager.merge(cinemaSession);
     }
 
     @Override
@@ -39,5 +41,14 @@ public class CinemaSessionRepositoryImpl implements CinemaSessionRepository{
     public void deleteCinemaSession(CinemaSession cinemaSession) {
         CinemaSession persistentInstance = entityManager.merge(cinemaSession);
         entityManager.remove(persistentInstance);
+    }
+
+    @Override
+    public List<CinemaSession> findCinemaSessionByText(String text) {
+        List<CinemaSession> sessions = new ArrayList<>();
+        for (CinemaSession cinemaSession : getAll())
+            if (cinemaSession.getMovie().getTitle().toLowerCase(Locale.ROOT).contains(text.toLowerCase(Locale.ROOT)))
+                sessions.add(cinemaSession);
+            return sessions;
     }
 }

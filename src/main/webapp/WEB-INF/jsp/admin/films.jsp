@@ -1,3 +1,6 @@
+<%@ page import="java.util.Base64" %>
+<%@ page import="java.util.List" %>
+<%@ page import="edu.school21.cinema.models.Movie" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
@@ -12,6 +15,10 @@
 <html>
 <head>
     <title>Title</title>
+    <%
+        List<Movie> movies = (List<Movie>) request.getAttribute("movies");
+        int index = 0;
+    %>
 </head>
 <body>
 Films
@@ -22,6 +29,9 @@ Films
         <tr>
             <th>
                 ID
+            </th>
+            <th>
+                Постер
             </th>
             <th>
                 Название
@@ -36,16 +46,28 @@ Films
                 Описание
             </th>
             <th>
-                Сеансы
-            </th>
-            <th>
                 Редактировать
             </th>
         </tr>
-        <c:forEach items="${movies}" var="iterMovie">
+        <c:forEach items="${movies}" var="iterMovie" begin="0" end="${movies.size()}" varStatus="loop">
             <tr>
                 <td>
                         ${iterMovie.id}
+                </td>
+                <td>
+                    <c:if test="${requestScope.hasImages.get(loop.index) == true}">
+                        <img src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(movies.get(index).getImageBytes())%>" style="height: 100px; width: 150px;">
+                        <%
+                            index++;
+                        %>
+                    </c:if>
+                    <c:if test="${requestScope.hasImages.get(loop.index) == false}">
+                        <img src="${pageContext.request.contextPath}/img/image.png" style="height: 100px; width: 150px;">
+                        <%
+                            index++;
+                        %>
+                    </c:if>
+
                 </td>
                 <td>
                         ${iterMovie.title}
@@ -60,9 +82,6 @@ Films
                         ${iterMovie.description}
                 </td>
                 <td>
-                        ${iterMovie.sessions}
-                </td>
-                <td>
                     <a href="/admin/films/${iterMovie.id}">Редактировать</a>
                     <form:form method="post" action="/admin/films/${iterMovie.id}/delete">
                         <input type="submit" value="Удалить">
@@ -75,7 +94,7 @@ Films
 </div>
 
 <div class="addMovies">
-    <form:form method="post" action="/admin/films" modelAttribute="movie">
+    <form:form method="post" action="/admin/films" enctype="multipart/form-data" modelAttribute="movie">
         <form:label path="title">Название</form:label>
         <form:input path="title"></form:input>
         <form:label path="dateOfRelease">Дата выпуска</form:label>
@@ -84,8 +103,14 @@ Films
         <form:input path="restrictions"></form:input>
         <form:label path="description">Описание</form:label>
         <form:input path="description"></form:input>
+        <input type="file" name="file" accept="image/*">
         <button type="submit">Добавить</button>
     </form:form>
+
+<%--    <form method="post" action="/admin/films" enctype="multipart/form-data">--%>
+<%--        --%>
+<%--        <button type="submit">Добавить</button>--%>
+<%--    </form>--%>
 </div>
 </body>
 </html>

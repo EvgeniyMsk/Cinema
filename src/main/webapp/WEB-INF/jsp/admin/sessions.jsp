@@ -45,13 +45,13 @@ Sessions
                         ${iterCinemaSession.id}
                 </td>
                 <td>
-                        ${iterCinemaSession.date}
+                        ${iterCinemaSession.date.toLocalDate()} ${iterCinemaSession.date.toLocalTime()}
                 </td>
                 <td>
-                        ${iterCinemaSession.movieHall}
+                    Зал №${iterCinemaSession.movieHall.id}, ${iterCinemaSession.movieHall.seatsCount} посадочных мест
                 </td>
                 <td>
-                        ${iterCinemaSession.movie}
+                        ${iterCinemaSession.movie.title}
                 </td>
                 <td>
                         ${iterCinemaSession.ticketCost}
@@ -69,25 +69,27 @@ Sessions
 </div>
 
 <div class="addCinemaSessions">
-    <form:form method="post" action="/admin/sessions" modelAttribute="cinemaSession">
-        <form:label path="date">Дата</form:label>
-        <input type="datetime-local" pattern="yyyy-MM-dd" name="releaseDate" required>
-        <form:label path="movieHall">Кинозал</form:label>
-        <form:select path="movieHall">
+    <form method="post" action="/admin/sessions">
+        <label for="date">Дата</label>
+        <input id="date" type="datetime-local" pattern="yyyy-MM-dd, HH:mm" name="sessionDateTime" required>
+        <label for="movieHall">Кинозал</label>
+        <select id="movieHall" name="movieHallId">
             <c:forEach items="${movieHalls}" var="iterMovieHall">
-                <form:option value="Зал №${iterMovieHall.id}, ${iterMovieHall.seatsCount} посадочных мест"></form:option>
+                <option value="${iterMovieHall.id}">
+                    Зал №${iterMovieHall.id}, ${iterMovieHall.seatsCount} посадочных мест</option>
             </c:forEach>
-        </form:select>
-        <form:label path="movie">Название фильма</form:label>
-        <form:select path="movie">
+        </select>
+        <label for="movie">Фильм</label>
+        <select id="movie" name="movieId">
             <c:forEach items="${movies}" var="iterMovie">
-                <form:option value="${iterMovie.title}"></form:option>
+                <option value="${iterMovie.id}">
+                    ${iterMovie.title}</option>
             </c:forEach>
-        </form:select>
-        <form:label path="ticketCost">Цена билета</form:label>
-        <form:input path="ticketCost"></form:input>
+        </select>
+        <label for="ticketCost">Цена билета</label>
+        <input type="text" id="ticketCost" name="ticketCost">
         <button type="submit">Добавить</button>
-    </form:form>
+    </form>
 </div>
 </body>
 </html>

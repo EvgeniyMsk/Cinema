@@ -13,6 +13,6 @@ public class CinemaSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) {
-        http.addFilterBefore(new CinemaEncodingFilter(), ChannelProcessingFilter.class);
+//        http.addFilterBefore(new CinemaEncodingFilter(), ChannelProcessingFilter.class);
     }
 }

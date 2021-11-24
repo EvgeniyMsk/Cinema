@@ -28,7 +28,7 @@ public class MovieRepositoryImpl implements MovieRepository{
 
     @Override
     public void createMovie(Movie movie) {
-        entityManager.persist(movie);
+        entityManager.merge(movie);
     }
 
     @Override
@@ -45,4 +45,5 @@ public class MovieRepositoryImpl implements MovieRepository{
         Movie persistentInstance = entityManager.find(Movie.class, movie.getId());
         entityManager.remove(persistentInstance);
     }
+
 }
