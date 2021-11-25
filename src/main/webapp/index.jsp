@@ -11,9 +11,23 @@
     <title>Title</title>
 </head>
 <body>
-<a href="/admin/halls">Кинозалы</a>
-<a href="/admin/films">Фильмы</a>
-<a href="/admin/sessions">Сеансы</a>
-<a href="/sessions">Поиск по киносеансам</a>
+<div>
+    <a href="/admin/halls">Кинозалы</a>
+</div>
+<div>
+    <a href="/admin/films">Фильмы</a>
+</div>
+<div>
+    <a href="/admin/sessions">Сеансы</a>
+</div>
+<div>
+    <a href="/sessions">Поиск по киносеансам</a>
+</div>
+<div>
+    <a href="/auth/login">Авторизация</a>
+</div>
+<div>
+    <a href="/auth/register">Регистрация</a>
+</div>
 </body>
 </html>

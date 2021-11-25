@@ -49,25 +49,24 @@ Films
                 Редактировать
             </th>
         </tr>
-        <c:forEach items="${movies}" var="iterMovie" begin="0" end="${movies.size()}" varStatus="loop">
+        <c:forEach items="${movies}" var="iterMovie">
             <tr>
                 <td>
                         ${iterMovie.id}
                 </td>
                 <td>
-                    <c:if test="${requestScope.hasImages.get(loop.index) == true}">
+                    <c:if test="${iterMovie.hasImage == true}">
                         <img src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(movies.get(index).getImageBytes())%>" style="height: 100px; width: 150px;">
                         <%
                             index++;
                         %>
                     </c:if>
-                    <c:if test="${requestScope.hasImages.get(loop.index) == false}">
+                    <c:if test="${iterMovie.hasImage == false}">
                         <img src="${pageContext.request.contextPath}/img/image.png" style="height: 100px; width: 150px;">
                         <%
                             index++;
                         %>
                     </c:if>
-
                 </td>
                 <td>
                         ${iterMovie.title}

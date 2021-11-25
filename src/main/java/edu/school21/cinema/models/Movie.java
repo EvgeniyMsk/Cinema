@@ -14,7 +14,6 @@ import java.util.List;
 @Data
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +25,14 @@ public class Movie {
     @Lob
     @Type(type = "org.hibernate.type.BinaryType")
     public byte[] imageBytes;
+    private boolean hasImage;
     @OneToMany(mappedBy = "movie",cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonIgnore
     private List<CinemaSession> sessions;
+
+    public Movie() {
+        this.hasImage = false;
+    }
 
     public Movie(String title, Date dateOfRelease, int restrictions, String description) {
         this.title = title;

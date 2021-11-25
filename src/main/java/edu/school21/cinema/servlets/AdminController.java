@@ -18,9 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 
@@ -52,7 +50,7 @@ public class AdminController {
         try {
             if (movieHallService.getMovieHallById(Long.parseLong(id)) != null) {
                 model.addAttribute("movieHall", movieHallService.getMovieHallById(Long.parseLong(id)));
-                return "/admin/showHall";
+                return "/admin/editHall";
             }
             return "redirect:/admin/halls";
         } catch (Exception e) {
@@ -79,13 +77,6 @@ public class AdminController {
         model.addAttribute("movies", movieService.getAll());
         model.addAttribute("movie", new Movie());
         request.setAttribute("movies", movieService.getAll());
-        List<Boolean> hasImage = new ArrayList<>();
-        for (Movie movie : movieService.getAll())
-            if (movie.imageBytes.length > 0)
-                hasImage.add(true);
-            else
-                hasImage.add(false);
-            request.setAttribute("hasImages", hasImage);
         return "/admin/films";
     }
 
@@ -98,6 +89,8 @@ public class AdminController {
         Date date = formatter.parse(dateOfRelease);
         movie.setDateOfRelease(date);
         movie.setImageBytes(file.getBytes());
+        if (file.getBytes().length > 0)
+            movie.setHasImage(true);
         movieService.createMovie(movie);
         return "redirect:/admin/films";
     }
@@ -108,11 +101,7 @@ public class AdminController {
             if (movieService.getMovieById(Long.parseLong(id)) != null) {
                 model.addAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
                 request.setAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
-                if (movieService.getMovieById(Long.parseLong(id)).imageBytes.length > 0)
-                    request.setAttribute("hasImage", true);
-                else
-                    request.setAttribute("hasImage", false);
-                return "/admin/showFilm";
+                return "/admin/editFilm";
             }
             return "redirect:/admin/films";
         } catch (Exception e) {
@@ -137,9 +126,14 @@ public class AdminController {
         Date date = formatter.parse(dateOfRelease);
         movie.setDateOfRelease(date);
         if (file.getBytes().length == 0)
+        {
             movie.setImageBytes(movieService.getMovieById(Long.parseLong(id)).getImageBytes());
-        else
-        movie.setImageBytes(file.getBytes());
+            movie.setHasImage(movieService.getMovieById(Long.parseLong(id)).isHasImage());
+        }
+        else {
+            movie.setImageBytes(file.getBytes());
+            movie.setHasImage(true);
+        }
         movieService.updateMovie(movie);
         return "redirect:/admin/films";
     }
@@ -180,7 +174,7 @@ public class AdminController {
                 model.addAttribute("cinemaSession", cinemaSessionService.getCinemaSessionById(Long.parseLong(id)));
                 model.addAttribute("movies", movieService.getAll());
                 model.addAttribute("movieHalls", movieHallService.getAll());
-                return "/admin/showSession";
+                return "/admin/editSession";
             }
             return "redirect:/admin/sessions";
         } catch (Exception e) {

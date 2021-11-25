@@ -87,9 +87,12 @@
                                 var href = document.createElement("a");
                                 var image = document.createElement("img");
                                 href.className='link-success';
-                                href.href = "/admin/films/" + msg[i].movie.id;
+                                href.href = "/sessions/" + msg[i].id;
                                 href.innerText = msg[i].movie.title;
-                                image.src = 'data:image/jpeg;base64,' + msg[i].movie.imageBytes;
+                                if (msg[i].movie.hasImage === true)
+                                    image.src = 'data:image/jpeg;base64,' + msg[i].movie.imageBytes;
+                                else
+                                    image.src = '${pageContext.request.contextPath}/img/image.png';
                                 image.style.width = '150px';
                                 image.style.height = '100px';
                                 tdd1.appendChild(document.createTextNode(msg[i].date.year+ '-' +msg[i].date.monthValue + '-' + msg[i].date.dayOfMonth
@@ -101,7 +104,7 @@
                                 tdd6.appendChild(image);
                             }
                             document.getElementById("main").appendChild(table);
-                            if(msg != ''){
+                            if(msg !== ''){
                                 $result.fadeIn();
                             } else {
                                 $result.fadeOut(100);
