@@ -40,4 +40,12 @@ public class CinemaUserRepositoryImpl implements CinemaUserRepository {
         CinemaUser persistentInstance = entityManager.merge(cinemaUser);
         entityManager.remove(persistentInstance);
     }
+
+    @Override
+    public CinemaUser getUserByUsername(String username) {
+        for (CinemaUser cinemaUser : getAll())
+            if (cinemaUser.getUserName().equals(username))
+                return cinemaUser;
+        return null;
+    }
 }

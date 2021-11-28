@@ -36,4 +36,17 @@ public class CinemaUserServiceImpl implements CinemaUserService {
     public void deleteCinemaUser(CinemaUser cinemaUser) {
         cinemaUserRepository.deleteUser(cinemaUser);
     }
+
+    @Override
+    public boolean authorize(CinemaUser cinemaUser) {
+        CinemaUser temp = cinemaUserRepository.getUserByUsername(cinemaUser.getUserName());
+        if (temp != null)
+            return temp.getPassword().equals(cinemaUser.getPassword());
+        return false;
+    }
+
+    @Override
+    public CinemaUser getCinemaUserByUserName(String username) {
+        return cinemaUserRepository.getUserByUsername(username);
+    }
 }

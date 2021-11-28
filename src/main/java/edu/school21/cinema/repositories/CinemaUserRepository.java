@@ -9,6 +9,7 @@ import java.util.List;
 public interface CinemaUserRepository {
     List<CinemaUser> getAll();
     CinemaUser getUserById(Long id);
+    CinemaUser getUserByUsername(String username);
     void createUser(CinemaUser cinemaUser);
     void updateUser(CinemaUser cinemaUser);
     void deleteUser(CinemaUser cinemaUser);

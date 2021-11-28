@@ -35,8 +35,8 @@ public class CinemaSession {
         return "CinemaSession{" +
                 "id=" + id +
                 ", date=" + date +
-                ", movieHall=" + movieHall.getId() +
-                ", movie=" + movie.getTitle() +
+//                ", movieHall=" + movieHall.getId() +
+//                ", movie=" + movie.getTitle() +
                 ", ticketCost=" + ticketCost +
                 '}';
     }
