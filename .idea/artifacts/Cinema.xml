@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Cinema">
+    <output-path>$PROJECT_DIR$/out/artifacts/Cinema</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="jpa-descriptors" facet="Cinema/jpa/JPA" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

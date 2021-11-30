@@ -26,7 +26,7 @@
 </head>
 <body>
 <%=request.getSession().getAttribute("user")%>
-<form action="${pageContext.request.contextPath}/auth/logout" method="POST">
+<form action="/auth/logout" method="POST">
     <input type="submit" value="Выйти">
 </form>
 </body>

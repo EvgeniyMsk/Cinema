@@ -54,14 +54,15 @@ public class AuthController {
     }
 
     @GetMapping("/auth/logout")
-    public String getlogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public String getLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         return "redirect:/auth/profile";
     }
 
     @PostMapping("/auth/logout")
-    public String logout(HttpServletRequest req) {
+    public String logout(@ModelAttribute ("user")CinemaUser cinemaUser,
+                         HttpServletRequest req) {
         HttpSession session = req.getSession();
-        session.setAttribute("user", null);
+        session.removeAttribute("user");
         return "/auth/login";
     }
 }
