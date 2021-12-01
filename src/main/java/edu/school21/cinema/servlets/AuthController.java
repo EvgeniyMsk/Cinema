@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Controller
 public class AuthController {
@@ -24,14 +22,13 @@ public class AuthController {
     }
 
     @PostMapping("/auth/signIn")
-    public String signIn(@ModelAttribute ("user")CinemaUser cinemaUser,
-                         HttpServletRequest request, HttpServletResponse response) {
+    public String signIn(@ModelAttribute ("user")CinemaUser cinemaUser, HttpServletRequest request) {
         if (cinemaUserService.authorize(cinemaUser)) {
             HttpSession session = request.getSession();
             session.setAttribute("user", cinemaUserService.getCinemaUserByUserName(cinemaUser.getUserName()));
-            return "redirect:/auth/profile";
+            return "/auth/profile";
         }
-        return "redirect:/auth/login";
+        return "/auth/login";
     }
 
     @GetMapping("/auth/register")
@@ -45,22 +42,21 @@ public class AuthController {
         cinemaUserService.createCinemaUser(cinemaUser);
         HttpSession session = request.getSession();
         session.setAttribute("user", cinemaUserService.getCinemaUserByUserName(cinemaUser.getUserName()));
-        return "redirect:/auth/profile";
+        return "/auth/profile";
     }
 
     @GetMapping("/auth/profile")
-    public String profile(HttpServletRequest request, HttpServletResponse response) {
+    public String profile() {
         return "/auth/profile";
     }
 
     @GetMapping("/auth/logout")
-    public String getLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        return "redirect:/auth/profile";
+    public String getLogout() {
+        return "/auth/profile";
     }
 
     @PostMapping("/auth/logout")
-    public String logout(@ModelAttribute ("user")CinemaUser cinemaUser,
-                         HttpServletRequest req) {
+    public String logout(@ModelAttribute ("user")CinemaUser cinemaUser, HttpServletRequest req) {
         HttpSession session = req.getSession();
         session.removeAttribute("user");
         return "/auth/login";

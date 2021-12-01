@@ -1,6 +1,7 @@
 package edu.school21.cinema.filters;
 
 import edu.school21.cinema.models.CinemaUser;
+import edu.school21.cinema.models.roles.ERole;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -18,10 +19,16 @@ public class CinemaAuthFilter implements Filter {
         HttpServletResponse response = ((HttpServletResponse) servletResponse);
         String requestURI = ((HttpServletRequest) servletRequest).getRequestURI();
         CinemaUser cinemaUser = (CinemaUser) session.getAttribute("user");
-        if (cinemaUser == null && requestURI.contains("/auth") && !requestURI.contains("/login"));
-        else if (cinemaUser != null && requestURI.contains("/auth") && !requestURI.contains("/profile") &&
-        !requestURI.contains("/logout"))
-            response.sendRedirect("/auth/profile");
+        if (requestURI.contains("/auth")) {
+            if (cinemaUser == null && !requestURI.contains("/login") && !requestURI.contains("/register") &&
+                    !requestURI.contains("/signIn") && !requestURI.contains("/signOut"))
+                response.sendRedirect("/auth/login");
+            else if (cinemaUser != null && !requestURI.contains("/profile") && !requestURI.contains("/logout"))
+                response.sendRedirect("/auth/profile");
+        } else if (requestURI.contains("/admin")) {
+            if (cinemaUser == null || (cinemaUser.getRole().equals(ERole.USER)))
+                response.sendRedirect("/");
+        }
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
