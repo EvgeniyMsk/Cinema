@@ -29,5 +29,8 @@
 <div>
     <a href="/auth/register">Регистрация</a>
 </div>
+<div>
+    <a href="/films">Все фильмы</a>
+</div>
 </body>
 </html>
