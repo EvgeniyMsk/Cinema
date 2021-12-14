@@ -3,8 +3,6 @@ package edu.school21.cinema.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,9 +19,7 @@ public class Movie {
     private Date dateOfRelease;
     private int restrictions;
     private String description;
-    @Lob
-    @Type(type = "org.hibernate.type.BinaryType")
-    public byte[] imageBytes;
+    public String posterUrl;
     private boolean hasImage;
     @OneToMany(mappedBy = "movie",cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonIgnore

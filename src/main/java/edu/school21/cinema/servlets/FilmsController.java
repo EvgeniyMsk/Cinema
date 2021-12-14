@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class FilmsController {
+    private String uploadPath = "C:/Users/User/Desktop/images";
     @Autowired
     private MovieService movieService;
 

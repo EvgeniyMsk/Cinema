@@ -6,6 +6,7 @@ import edu.school21.cinema.models.MovieHall;
 import edu.school21.cinema.services.CinemaSessionService;
 import edu.school21.cinema.services.MovieHallService;
 import edu.school21.cinema.services.MovieService;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,10 +22,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 
 @Controller
 public class AdminController {
+    private String uploadPath = "C:/Users/User/Desktop/Cinema/src/main/webapp/img";
     @Autowired
     private MovieHallService movieHallService;
     @Autowired
@@ -83,14 +87,20 @@ public class AdminController {
     @PostMapping("/admin/films")
     public String addFilms(@ModelAttribute ("movie") Movie movie,
                            @ModelAttribute("releaseDate") String dateOfRelease,
-                           @RequestParam("file")MultipartFile file,
-                           HttpServletRequest request) throws ParseException, IOException {
+                           @RequestParam("file")MultipartFile file) throws ParseException, IOException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = formatter.parse(dateOfRelease);
         movie.setDateOfRelease(date);
-        movie.setImageBytes(file.getBytes());
-        if (file.getBytes().length > 0)
+        if (file.getBytes().length > 0) {
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists())
+            { uploadDir.mkdir(); }
+            String uuidFile = UUID.nameUUIDFromBytes(file.getBytes()).toString();
+            String resultFileName = uuidFile + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+            file.transferTo(new File(uploadPath + "/" + resultFileName));
+            movie.setPosterUrl(resultFileName);
             movie.setHasImage(true);
+        }
         movieService.createMovie(movie);
         return "redirect:/admin/films";
     }
@@ -110,7 +120,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/films/{id}/delete")
-    public String deleteMovies(@PathVariable("id") Long id) {
+    public String deleteMovies(@PathVariable("id") Long id) throws IOException {
         Movie movie = movieService.getMovieById(id);
         movieService.deleteMovie(movie);
         return "redirect:/admin/films";
@@ -120,19 +130,23 @@ public class AdminController {
     public String updateMovies(@PathVariable("id") String id,
                                @ModelAttribute ("movie") Movie movie,
                                @ModelAttribute("releaseDate") String dateOfRelease,
-                               @RequestParam("file")MultipartFile file,
-                               HttpServletRequest request) throws ParseException, IOException {
+                               @RequestParam("file")MultipartFile file) throws ParseException, IOException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = formatter.parse(dateOfRelease);
         movie.setDateOfRelease(date);
-        if (file.getBytes().length == 0)
-        {
-            movie.setImageBytes(movieService.getMovieById(Long.parseLong(id)).getImageBytes());
-            movie.setHasImage(movieService.getMovieById(Long.parseLong(id)).isHasImage());
+        if (file.getBytes().length > 0) {
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists())
+            { uploadDir.mkdir(); }
+            String uuidFile = UUID.nameUUIDFromBytes(file.getBytes()).toString();
+            String resultFileName = uuidFile + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+            file.transferTo(new File(uploadPath + "/" + resultFileName));
+            movie.setPosterUrl(resultFileName);
+            movie.setHasImage(true);
         }
         else {
-            movie.setImageBytes(file.getBytes());
-            movie.setHasImage(true);
+            movie.setPosterUrl(movieService.getMovieById(Long.parseLong(id)).getPosterUrl());
+            movie.setHasImage(movieService.getMovieById(Long.parseLong(id)).isHasImage());
         }
         movieService.updateMovie(movie);
         return "redirect:/admin/films";

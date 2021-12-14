@@ -54,7 +54,12 @@
                         ${cinemaSession.movie.title}
                     </div>
                     <div>
-                        <img src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(cinemaSession.getMovie().getImageBytes())%>" style="height: 100px; width: 150px;">
+                        <c:if test="${cinemaSession.movie.hasImage == true}">
+                            <img src="${pageContext.request.contextPath}/img/${cinemaSession.movie.posterUrl}" style="height: 100px; width: 150px;">
+                        </c:if>
+                        <c:if test="${cinemaSession.movie.hasImage == false}">
+                            <img src="${pageContext.request.contextPath}/img/image.png" style="height: 100px; width: 150px;">
+                        </c:if>
                     </div>
                     <div>
                         ${cinemaSession.movie.description}

@@ -53,7 +53,7 @@ Films
                 </td>
                 <td>
                     <c:if test="${iterMovie.hasImage == true}">
-                        <img src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(movies.get(index).getImageBytes())%>" style="height: 100px; width: 150px;">
+                        <img src="${pageContext.request.contextPath}/img/${iterMovie.posterUrl}" style="height: 100px; width: 150px;">
                         <%
                             index++;
                         %>

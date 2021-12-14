@@ -26,7 +26,7 @@ public class AuthController {
         if (cinemaUserService.authorize(cinemaUser)) {
             HttpSession session = request.getSession();
             session.setAttribute("user", cinemaUserService.getCinemaUserByUserName(cinemaUser.getUserName()));
-            return "/auth/profile";
+            return "redirect:/auth/profile";
         }
         return "/auth/login";
     }

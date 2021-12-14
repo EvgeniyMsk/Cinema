@@ -42,7 +42,7 @@
             <td>
                 <div>
                     <c:if test="${movie.hasImage == true}">
-                        <img src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(movie.getImageBytes())%>" style="height: 100px; width: 150px;">
+                        <img src="${pageContext.request.contextPath}/img/${movie.posterUrl}" style="height: 100px; width: 150px;">
                     </c:if>
                     <c:if test="${movie.hasImage == false}">
                         <img src="${pageContext.request.contextPath}/img/image.png" style="height: 100px; width: 150px;">

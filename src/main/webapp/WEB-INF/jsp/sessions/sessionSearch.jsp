@@ -90,12 +90,12 @@
                                 href.href = "/sessions/" + msg[i].id;
                                 href.innerText = msg[i].movie.title;
                                 if (msg[i].movie.hasImage === true)
-                                    image.src = 'data:image/jpeg;base64,' + msg[i].movie.imageBytes;
+                                    image.src = '${pageContext.request.contextPath}/img/' + msg[i].movie.posterUrl;
                                 else
                                     image.src = '${pageContext.request.contextPath}/img/image.png';
                                 image.style.width = '150px';
                                 image.style.height = '100px';
-                                tdd1.appendChild(document.createTextNode(msg[i].date.year+ '-' +msg[i].date.monthValue + '-' + msg[i].date.dayOfMonth
+                                tdd1.appendChild(document.createTextNode(msg[i].date.year+ '-' + msg[i].date.monthValue + '-' + msg[i].date.dayOfMonth
                                     + ' ' + msg[i].date.hour + ':' + msg[i].date.minute));
                                 tdd2.appendChild(document.createTextNode(msg[i].movieHall.id));
                                 tdd3.appendChild(document.createTextNode(msg[i].movie.title));

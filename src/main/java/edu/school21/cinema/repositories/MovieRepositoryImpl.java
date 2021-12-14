@@ -8,11 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 @Repository
 @Transactional
 public class MovieRepositoryImpl implements MovieRepository{
+    private String uploadPath = "C:/Users/User/Desktop/Cinema/src/main/webapp/img";
+
     @PersistenceContext(type = PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
 
@@ -41,9 +46,13 @@ public class MovieRepositoryImpl implements MovieRepository{
     }
 
     @Override
-    public void deleteMovie(Movie movie) {
+    public void deleteMovie(Movie movie) throws IOException {
         Movie persistentInstance = entityManager.find(Movie.class, movie.getId());
+        if (movie.isHasImage())
+        {
+            File file = new File(uploadPath + "/" + movie.getPosterUrl());
+            Files.delete(file.toPath());
+        }
         entityManager.remove(persistentInstance);
     }
-
 }

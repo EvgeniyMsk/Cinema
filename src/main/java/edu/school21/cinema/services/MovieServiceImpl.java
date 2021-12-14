@@ -44,7 +44,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void deleteMovie(Movie movie) {
+    public void deleteMovie(Movie movie) throws IOException {
         movieRepository.deleteMovie(movie);
     }
 }
