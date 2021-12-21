@@ -6,6 +6,7 @@ import edu.school21.cinema.models.MovieHall;
 import edu.school21.cinema.services.CinemaSessionService;
 import edu.school21.cinema.services.MovieHallService;
 import edu.school21.cinema.services.MovieService;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,14 +21,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
 
 @Controller
 public class AdminController {
-    private String uploadPath = "C:/Users/User/Desktop/Cinema/src/main/webapp/img";
+    private String uploadPath = "C:/Users/User/Desktop/images";
     @Autowired
     private MovieHallService movieHallService;
     @Autowired
@@ -77,9 +76,21 @@ public class AdminController {
 
 //    Movies
     @GetMapping("/admin/films")
-    public String films(Model model, HttpServletRequest request) {
+    public String films(Model model, HttpServletRequest request) throws IOException {
+        String dir = System.getProperty("user.dir");
+        System.out.println("current dir = " + dir);
         model.addAttribute("movies", movieService.getAll());
         model.addAttribute("movie", new Movie());
+        List<String> images = new ArrayList<>();
+        for (Movie movie : movieService.getAll())
+        {
+            if (movie.getPosterUrl() != null) {
+                byte[] fileContent = FileUtils.readFileToByteArray(new File(uploadPath + "/" + movie.getPosterUrl()));
+                String encodedString = Base64.getEncoder().encodeToString(fileContent);
+                images.add(encodedString);
+            }
+        }
+        request.setAttribute("images", images);
         request.setAttribute("movies", movieService.getAll());
         return "/admin/films";
     }
@@ -87,7 +98,7 @@ public class AdminController {
     @PostMapping("/admin/films")
     public String addFilms(@ModelAttribute ("movie") Movie movie,
                            @ModelAttribute("releaseDate") String dateOfRelease,
-                           @RequestParam("file")MultipartFile file) throws ParseException, IOException {
+                           @RequestParam("file") MultipartFile file) throws ParseException, IOException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = formatter.parse(dateOfRelease);
         movie.setDateOfRelease(date);
@@ -111,6 +122,11 @@ public class AdminController {
             if (movieService.getMovieById(Long.parseLong(id)) != null) {
                 model.addAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
                 request.setAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
+                if (movieService.getMovieById(Long.parseLong(id)).getPosterUrl() != null) {
+                    byte[] fileContent = FileUtils.readFileToByteArray(new File(uploadPath + "/" + movieService.getMovieById(Long.parseLong(id)).getPosterUrl()));
+                    String image = Base64.getEncoder().encodeToString(fileContent);
+                    request.setAttribute("image", image);
+                }
                 return "/admin/editFilm";
             }
             return "redirect:/admin/films";

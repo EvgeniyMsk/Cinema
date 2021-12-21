@@ -18,7 +18,6 @@
 </head>
 <body>
 <%
-    Movie movie = (Movie) request.getAttribute("movie");
 %>
     <table border="3">
         <tr>
@@ -42,7 +41,7 @@
             <td>
                 <div>
                     <c:if test="${movie.hasImage == true}">
-                        <img src="${pageContext.request.contextPath}/img/${movie.posterUrl}" style="height: 100px; width: 150px;">
+                        <img src="data:image/png;base64,<%=request.getAttribute("image")%>" style="height: 100px; width: 150px;">
                     </c:if>
                     <c:if test="${movie.hasImage == false}">
                         <img src="${pageContext.request.contextPath}/img/image.png" style="height: 100px; width: 150px;">

@@ -1,3 +1,4 @@
+<%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -10,6 +11,10 @@
 <html>
 <head>
     <title>Title</title>
+    <%
+        List<String> images = (List<String>) request.getAttribute("images");
+        int index = 0;
+    %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <style>
         * {box-sizing: border-box;}
@@ -90,7 +95,8 @@
                                 href.href = "/sessions/" + msg[i].id;
                                 href.innerText = msg[i].movie.title;
                                 if (msg[i].movie.hasImage === true)
-                                    image.src = '${pageContext.request.contextPath}/img/' + msg[i].movie.posterUrl;
+                                    image.src = '${pageContext.request.contextPath}/img/image.png';
+                                    <%--image.src = 'data:image/jpeg;base64,' + <%=images.get(0)%>;--%>
                                 else
                                     image.src = '${pageContext.request.contextPath}/img/image.png';
                                 image.style.width = '150px';

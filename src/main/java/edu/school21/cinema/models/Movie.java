@@ -3,8 +3,13 @@ package edu.school21.cinema.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.apache.commons.io.FileUtils;
+
 import javax.persistence.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -35,5 +40,11 @@ public class Movie {
         this.restrictions = restrictions;
         this.description = description;
         this.sessions = new ArrayList<>();
+    }
+
+    public String getContentImage() throws IOException {
+        String uploadPath = "C:/Users/User/Desktop/images";
+        byte[] fileContent = FileUtils.readFileToByteArray(new File(uploadPath + "/" + posterUrl));
+        return Base64.getEncoder().encodeToString(fileContent);
     }
 }

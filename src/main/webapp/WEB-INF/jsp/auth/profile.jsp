@@ -25,6 +25,7 @@
     </style>
 </head>
 <body>
+<a href="/">На главную</a>
 <%=request.getSession().getAttribute("user")%>
 <form action="/auth/logout" method="POST">
     <input type="submit" value="Выйти">

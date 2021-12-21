@@ -16,7 +16,7 @@
 <head>
     <title>Title</title>
     <%
-        List<Movie> movies = (List<Movie>) request.getAttribute("movies");
+        List<String> images = (List<String>) request.getAttribute("images");
         int index = 0;
     %>
 </head>
@@ -56,7 +56,7 @@ Films
                 </td>
                 <td>
                     <c:if test="${iterMovie.hasImage == true}">
-                        <img src="${pageContext.request.contextPath}/img/${iterMovie.posterUrl}" style="height: 100px; width: 150px;">
+                        <img src="data:image/png;base64,<%=images.get(index)%>" style="height: 100px; width: 150px;">
                         <%
                             index++;
                         %>
