@@ -2,6 +2,7 @@ package edu.school21.cinema.servlets;
 
 import edu.school21.cinema.models.CinemaSession;
 import edu.school21.cinema.models.Movie;
+import edu.school21.cinema.models.dao.CinemaSessionDao;
 import edu.school21.cinema.services.CinemaSessionService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +19,18 @@ import java.util.List;
 
 @Controller
 public class SessionsController {
-    private String uploadPath = "C:/Users/User/Desktop/images";
+    private String uploadPath = "/Users/qsymond/Desktop/images";
     @Autowired
     private CinemaSessionService cinemaSessionService;
 
     @GetMapping("/sessions/search")
     @ResponseBody
-    public List<CinemaSession> searchSessions(@RequestParam("filmName") String filmName, HttpServletRequest request) throws IOException {
+    public List<CinemaSessionDao> searchSessions(@RequestParam("filmName") String filmName, HttpServletRequest request) throws IOException {
         List<CinemaSession> cinemaSessions = cinemaSessionService.findCinemaSessionByText(filmName);
-        List<String> images = new ArrayList<>();
+        List<CinemaSessionDao> cinemaSessionDaos = new ArrayList<>();
         for (CinemaSession cinemaSession : cinemaSessions)
-        {
-            if (cinemaSession.getMovie().getPosterUrl() != null) {
-                byte[] fileContent = FileUtils.readFileToByteArray(new File(uploadPath + "/" + cinemaSession.getMovie().getPosterUrl()));
-                String encodedString = Base64.getEncoder().encodeToString(fileContent);
-                images.add(encodedString);
-            }
-        }
-        request.setAttribute("images", images);
-        request.setAttribute("images", cinemaSessionService);
-        return cinemaSessions;
+            cinemaSessionDaos.add(new CinemaSessionDao(cinemaSession));
+        return cinemaSessionDaos;
     }
 
     @GetMapping("/sessions")

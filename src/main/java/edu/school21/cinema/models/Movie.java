@@ -41,10 +41,4 @@ public class Movie {
         this.description = description;
         this.sessions = new ArrayList<>();
     }
-
-    public String getContentImage() throws IOException {
-        String uploadPath = "C:/Users/User/Desktop/images";
-        byte[] fileContent = FileUtils.readFileToByteArray(new File(uploadPath + "/" + posterUrl));
-        return Base64.getEncoder().encodeToString(fileContent);
-    }
 }

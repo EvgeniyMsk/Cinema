@@ -32,8 +32,8 @@ public class CinemaWebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/img/**")
-                .addResourceLocations("/img/");
+        registry.addResourceHandler("/img/**").addResourceLocations("/img/");
     }
+
+
 }

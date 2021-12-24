@@ -26,7 +26,7 @@ import java.util.*;
 
 @Controller
 public class AdminController {
-    private String uploadPath = "C:/Users/User/Desktop/images";
+    private String uploadPath = "/Users/qsymond/Desktop/images";
     @Autowired
     private MovieHallService movieHallService;
     @Autowired

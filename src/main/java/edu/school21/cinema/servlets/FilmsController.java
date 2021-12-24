@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @Controller
 public class FilmsController {
-    private String uploadPath = "C:/Users/User/Desktop/images";
+    private String uploadPath = "/Users/qsymond/Desktop/images";
     @Autowired
     private MovieService movieService;
 
@@ -37,6 +38,14 @@ public class FilmsController {
         }
         request.setAttribute("images", images);
         return "/chat/films";
+    }
+
+    @GetMapping("/films/{id}/content")
+    @ResponseBody
+    public byte[] getContent(@PathVariable("id") String id) throws IOException {
+        String uploadPath = "/Users/qsymond/Desktop/images";
+        Movie movie = movieService.getMovieById(Long.parseLong(id));
+        return FileUtils.readFileToByteArray(new File(uploadPath + "/" + movie.getPosterUrl()));
     }
 
     @GetMapping("/films/{id}/chat")

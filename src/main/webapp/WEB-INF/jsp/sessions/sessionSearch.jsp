@@ -12,8 +12,8 @@
 <head>
     <title>Title</title>
     <%
-        List<String> images = (List<String>) request.getAttribute("images");
-        int index = 0;
+//        List<String> images = (List<String>) request.getAttribute("images");
+//        int index = 0;
     %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <style>
@@ -71,43 +71,29 @@
                             const td1 = tr.insertCell();
                             const td2 = tr.insertCell();
                             const td3 = tr.insertCell();
-                            const td4 = tr.insertCell();
-                            const td5 = tr.insertCell();
-                            const td6 = tr.insertCell();
                             td1.appendChild(document.createTextNode('Дата'));
-                            td2.appendChild(document.createTextNode('Кинозал'));
-                            td3.appendChild(document.createTextNode('Фильм'));
-                            td4.appendChild(document.createTextNode('Цена'));
-                            td5.appendChild(document.createTextNode('Ссылка'));
-                            td6.appendChild(document.createTextNode('Постер'));
+                            td2.appendChild(document.createTextNode('Фильм'));
+                            td3.appendChild(document.createTextNode('Постер'));
                             for (var i = 0; i < msg.length; i++)
                             {
                                 var trr = table.insertRow();
                                 var tdd1 = trr.insertCell();
                                 var tdd2 = trr.insertCell();
                                 var tdd3 = trr.insertCell();
-                                var tdd4 = trr.insertCell();
-                                var tdd5 = trr.insertCell();
-                                var tdd6 = trr.insertCell();
                                 var href = document.createElement("a");
                                 var image = document.createElement("img");
                                 href.className='link-success';
                                 href.href = "/sessions/" + msg[i].id;
-                                href.innerText = msg[i].movie.title;
-                                if (msg[i].movie.hasImage === true)
-                                    image.src = '${pageContext.request.contextPath}/img/image.png';
-                                    <%--image.src = 'data:image/jpeg;base64,' + <%=images.get(0)%>;--%>
+                                href.innerText = msg[i].movieDao.name;
+                                if (msg[i].movieDao.hasContent === true)
+                                    image.src = '/films/' + msg[i].id + '/content';
                                 else
                                     image.src = '${pageContext.request.contextPath}/img/image.png';
                                 image.style.width = '150px';
                                 image.style.height = '100px';
-                                tdd1.appendChild(document.createTextNode(msg[i].date.year+ '-' + msg[i].date.monthValue + '-' + msg[i].date.dayOfMonth
-                                    + ' ' + msg[i].date.hour + ':' + msg[i].date.minute));
-                                tdd2.appendChild(document.createTextNode(msg[i].movieHall.id));
-                                tdd3.appendChild(document.createTextNode(msg[i].movie.title));
-                                tdd4.appendChild(document.createTextNode(msg[i].ticketCost));
-                                tdd5.appendChild(href);
-                                tdd6.appendChild(image);
+                                tdd1.appendChild(document.createTextNode(msg[i].dateTime));
+                                tdd2.appendChild(document.createTextNode(msg[i].movieDao.name));
+                                tdd3.appendChild(image);
                             }
                             document.getElementById("main").appendChild(table);
                             if(msg !== ''){
