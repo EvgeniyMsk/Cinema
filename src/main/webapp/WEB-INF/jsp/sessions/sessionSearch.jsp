@@ -85,14 +85,14 @@
                                 href.className='link-success';
                                 href.href = "/sessions/" + msg[i].id;
                                 href.innerText = msg[i].movieDao.name;
-                                if (msg[i].movieDao.hasContent === true)
-                                    image.src = '/films/' + msg[i].id + '/content';
-                                else
+                                image.src = '/films/' + msg[i].id + '/image';
+                                image.onerror = function () {
                                     image.src = '${pageContext.request.contextPath}/img/image.png';
+                                }
                                 image.style.width = '150px';
                                 image.style.height = '100px';
                                 tdd1.appendChild(document.createTextNode(msg[i].dateTime));
-                                tdd2.appendChild(document.createTextNode(msg[i].movieDao.name));
+                                tdd2.appendChild(href);
                                 tdd3.appendChild(image);
                             }
                             document.getElementById("main").appendChild(table);

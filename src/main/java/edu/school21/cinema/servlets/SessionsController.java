@@ -19,7 +19,6 @@ import java.util.List;
 
 @Controller
 public class SessionsController {
-    private String uploadPath = "/Users/qsymond/Desktop/images";
     @Autowired
     private CinemaSessionService cinemaSessionService;
 

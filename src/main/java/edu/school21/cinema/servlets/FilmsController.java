@@ -13,50 +13,38 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 
 @Controller
 public class FilmsController {
-    private String uploadPath = "/Users/qsymond/Desktop/images";
+    @Autowired
+    private String uploadPath;
+
     @Autowired
     private MovieService movieService;
 
     @GetMapping("/films")
-    public String films(Model model, HttpServletRequest request) throws IOException {
+    public String films(Model model, HttpServletRequest request) {
         model.addAttribute("movies", movieService.getAll());
         request.setAttribute("movies", movieService.getAll());
-        List<String> images = new ArrayList<>();
-        for (Movie movie : movieService.getAll())
-        {
-            if (movie.getPosterUrl() != null) {
-                byte[] fileContent = FileUtils.readFileToByteArray(new File(uploadPath + "/" + movie.getPosterUrl()));
-                String encodedString = Base64.getEncoder().encodeToString(fileContent);
-                images.add(encodedString);
-            }
-        }
-        request.setAttribute("images", images);
         return "/chat/films";
     }
 
-    @GetMapping("/films/{id}/content")
+    @GetMapping("/films/{id}/image")
     @ResponseBody
-    public byte[] getContent(@PathVariable("id") String id) throws IOException {
-        String uploadPath = "/Users/qsymond/Desktop/images";
-        Movie movie = movieService.getMovieById(Long.parseLong(id));
-        return FileUtils.readFileToByteArray(new File(uploadPath + "/" + movie.getPosterUrl()));
+    public byte[] getContent(@PathVariable("id") String id) {
+        try {
+            Movie movie = movieService.getMovieById(Long.parseLong(id));
+            return FileUtils.readFileToByteArray(new File(uploadPath + "/" + movie.getPosterUrl()));
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     @GetMapping("/films/{id}/chat")
-    public String goChat(@PathVariable("id") String id, Model model, HttpServletRequest request) {
+    public String goChat(@PathVariable("id") String id, Model model) {
         try {
             if (movieService.getMovieById(Long.parseLong(id)) != null) {
                 model.addAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
-                request.setAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
-                byte[] fileContent = FileUtils.readFileToByteArray(new File(uploadPath + "/" + movieService.getMovieById(Long.parseLong(id)).getPosterUrl()));
-                String image = Base64.getEncoder().encodeToString(fileContent);
-                request.setAttribute("image", image);
                 return "/chat/chat";
             }
             return "redirect:/";

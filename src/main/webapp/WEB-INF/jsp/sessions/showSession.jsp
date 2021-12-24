@@ -1,6 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.Base64" %>
 <%@ page import="edu.school21.cinema.models.CinemaSession" %>
 <%--
   Created by IntelliJ IDEA.
@@ -16,11 +15,8 @@
     <title>Информация о сеансе</title>
 </head>
 <body>
-<%
-    CinemaSession cinemaSession = (CinemaSession) request.getAttribute("cinemaSession");
-%>
 <div class="cinemaSessions">
-    <h1>Список сеансов</h1>
+    <h1>Просмотр сеанса</h1>
     <table border="3">
         <tr>
             <th>
@@ -55,7 +51,7 @@
                     </div>
                     <div>
                         <c:if test="${cinemaSession.movie.hasImage == true}">
-                            <img src="${pageContext.request.contextPath}/img/${cinemaSession.movie.posterUrl}" style="height: 100px; width: 150px;">
+                            <img src='/films/${cinemaSession.movie.id}/image' style="height: 100px; width: 150px;">
                         </c:if>
                         <c:if test="${cinemaSession.movie.hasImage == false}">
                             <img src="${pageContext.request.contextPath}/img/image.png" style="height: 100px; width: 150px;">

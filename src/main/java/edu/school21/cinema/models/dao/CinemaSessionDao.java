@@ -2,8 +2,6 @@ package edu.school21.cinema.models.dao;
 
 import edu.school21.cinema.models.CinemaSession;
 import lombok.Data;
-
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

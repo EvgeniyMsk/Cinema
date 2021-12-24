@@ -26,7 +26,8 @@ import java.util.*;
 
 @Controller
 public class AdminController {
-    private String uploadPath = "/Users/qsymond/Desktop/images";
+    @Autowired
+    private String uploadPath;
     @Autowired
     private MovieHallService movieHallService;
     @Autowired
@@ -77,8 +78,6 @@ public class AdminController {
 //    Movies
     @GetMapping("/admin/films")
     public String films(Model model, HttpServletRequest request) throws IOException {
-        String dir = System.getProperty("user.dir");
-        System.out.println("current dir = " + dir);
         model.addAttribute("movies", movieService.getAll());
         model.addAttribute("movie", new Movie());
         List<String> images = new ArrayList<>();

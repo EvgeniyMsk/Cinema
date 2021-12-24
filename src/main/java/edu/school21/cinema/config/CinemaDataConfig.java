@@ -1,27 +1,16 @@
 package edu.school21.cinema.config;
 
-
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.sql.DataSource;
-import java.io.File;
 
 
 @Configuration
@@ -29,8 +18,8 @@ import java.io.File;
 @EnableTransactionManagement
 @PropertySource("classpath:../application.properties")
 public class CinemaDataConfig {
-    @Value("${defaultImage}")
-    private String defaultImage;
+    @Value("${uploadPath}")
+    private String path;
 
     @Bean()
     public EntityManagerFactory entityManagerFactory() {
@@ -49,8 +38,8 @@ public class CinemaDataConfig {
         return transactionManager;
     }
 
-    @Bean()
-    public File defaultImage() {
-        return new File(defaultImage);
+    @Bean
+    public String uploadPath() {
+        return path;
     }
 }
