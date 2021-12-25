@@ -85,7 +85,7 @@
                                 href.className='link-success';
                                 href.href = "/sessions/" + msg[i].id;
                                 href.innerText = msg[i].movieDao.name;
-                                image.src = '/films/' + msg[i].id + '/image';
+                                image.src = '/films/' + msg[i].movieDao.id + '/image';
                                 image.onerror = function () {
                                     image.src = '${pageContext.request.contextPath}/img/image.png';
                                 }

@@ -4,9 +4,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Редактирование фильма</title>
+    <title>Обсуждение фильма</title>
 </head>
 <body>
+<h1>Обсуждение фильма</h1>
 <div>
     <table border="3">
         <tr>
