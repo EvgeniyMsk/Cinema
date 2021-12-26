@@ -56,9 +56,9 @@ public class AdminController {
                 model.addAttribute("movieHall", movieHallService.getMovieHallById(Long.parseLong(id)));
                 return "/admin/editHall";
             }
-            return "/admin/halls";
+            return "/error/error";
         } catch (Exception e) {
-            return "/admin/halls";
+            return "/error/error";
         }
     }
 
@@ -128,9 +128,9 @@ public class AdminController {
                 }
                 return "/admin/editFilm";
             }
-            return "redirect:/admin/films";
+            return "/error/error";
         } catch (Exception e) {
-            return "redirect:/admin/films";
+            return "/error/error";
         }
     }
 
@@ -205,9 +205,9 @@ public class AdminController {
                 model.addAttribute("movieHalls", movieHallService.getAll());
                 return "/admin/editSession";
             }
-            return "redirect:/admin/sessions";
+            return "/error/error";
         } catch (Exception e) {
-            return "redirect:/admin/sessions";
+            return "/error/error";
         }
     }
 

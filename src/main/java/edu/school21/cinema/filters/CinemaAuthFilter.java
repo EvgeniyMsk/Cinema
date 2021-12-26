@@ -19,21 +19,21 @@ public class CinemaAuthFilter implements Filter {
         HttpServletResponse response = ((HttpServletResponse) servletResponse);
         String requestURI = ((HttpServletRequest) servletRequest).getRequestURI();
         CinemaUser cinemaUser = (CinemaUser) session.getAttribute("user");
-        if (requestURI.contains("/auth")) {
-            if (cinemaUser == null && !requestURI.contains("/login") && !requestURI.contains("/register") &&
-                    !requestURI.contains("/signIn") && !requestURI.contains("/signOut")) {
+        if (requestURI.contains("/auth/")) {
+            if (cinemaUser == null && !requestURI.contains("/login") && !requestURI.contains("/register") && !requestURI.contains("/signOut")) {
                 if (requestURI.contains("/signIn"))
                     response.sendRedirect("/auth/login");
-                if (requestURI.contains("/signUp"))
+                else if (requestURI.contains("/signUp"))
                     response.sendRedirect("/auth/register");
+                else response.sendRedirect("/auth/login");
             }
             else if (cinemaUser != null && !requestURI.contains("/profile") && !requestURI.contains("/logout"))
                 response.sendRedirect("/auth/profile");
         }
-//        else if (requestURI.contains("/admin")) {
-//            if (cinemaUser == null || (cinemaUser.getRole().equals(ERole.USER)))
-//                response.sendRedirect("/");
-//        }
+        else if (requestURI.contains("/admin/")) {
+            if (cinemaUser == null || (cinemaUser.getRole().equals(ERole.USER)))
+                response.sendRedirect("/");
+        }
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
