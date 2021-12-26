@@ -23,8 +23,8 @@ public class CinemaUserServiceImpl implements CinemaUserService {
     }
 
     @Override
-    public void createCinemaUser(CinemaUser cinemaUser) {
-        cinemaUserRepository.createUser(cinemaUser);
+    public boolean createCinemaUser(CinemaUser cinemaUser) {
+        return cinemaUserRepository.createUser(cinemaUser);
     }
 
     @Override

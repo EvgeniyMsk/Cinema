@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,10 +19,13 @@ public class CinemaUser {
     private String userName;
     private String password;
     private ERole role;
+    @OneToMany(mappedBy = "cinemaUser", cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<AuthHistory> authHistory;
 
     public CinemaUser(String userName, String password, ERole role) {
         this.userName = userName;
         this.password = password;
         this.role = role;
+        this.authHistory = new ArrayList<>();
     }
 }

@@ -26,8 +26,12 @@ public class CinemaUserRepositoryImpl implements CinemaUserRepository {
     }
 
     @Override
-    public void createUser(CinemaUser cinemaUser) {
+    public boolean createUser(CinemaUser cinemaUser) {
+        for (CinemaUser i : getAll())
+            if (i.getUserName().equals(cinemaUser.getUserName()))
+                return false;
         entityManager.merge(cinemaUser);
+        return true;
     }
 
     @Override

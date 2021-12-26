@@ -29,15 +29,4 @@ public class CinemaSession {
         this.date = date;
         this.ticketCost = ticketCost;
     }
-
-    @Override
-    public String toString() {
-        return "CinemaSession{" +
-                "id=" + id +
-                ", date=" + date +
-//                ", movieHall=" + movieHall.getId() +
-//                ", movie=" + movie.getTitle() +
-                ", ticketCost=" + ticketCost +
-                '}';
-    }
 }

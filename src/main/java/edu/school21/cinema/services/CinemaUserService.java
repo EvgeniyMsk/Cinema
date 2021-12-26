@@ -10,9 +10,8 @@ public interface CinemaUserService {
     List<CinemaUser> getAll();
     CinemaUser getCinemaUserById(Long id);
     CinemaUser getCinemaUserByUserName(String username);
-    void createCinemaUser(CinemaUser cinemaUser);
+    boolean createCinemaUser(CinemaUser cinemaUser);
     void updateCinemaUser(CinemaUser cinemaUser);
     void deleteCinemaUser(CinemaUser cinemaUser);
     boolean authorize(CinemaUser cinemaUser);
-
 }

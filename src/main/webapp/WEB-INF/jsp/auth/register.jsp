@@ -12,7 +12,7 @@
     </p>
 </div>
 <div>
-    <form:form action="/auth/signUp" method="post" modelAttribute="newUser">
+    <form:form action="/auth/signUp" method="post" modelAttribute="user">
         <form:label path="userName">Логин</form:label>
         <form:input path="userName"></form:input>
         <form:label path="password">Пароль</form:label>

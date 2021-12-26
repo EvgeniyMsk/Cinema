@@ -1,5 +1,6 @@
 package edu.school21.cinema.servlets;
 
+import edu.school21.cinema.models.AuthHistory;
 import edu.school21.cinema.models.CinemaUser;
 import edu.school21.cinema.models.roles.ERole;
 import edu.school21.cinema.services.CinemaUserService;
@@ -8,8 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Date;
 
 @Controller
 public class AuthController {
@@ -32,17 +37,22 @@ public class AuthController {
     }
 
     @GetMapping("/auth/register")
-    public String register(@ModelAttribute ("newUser")CinemaUser cinemaUser) {
+    public String register(@ModelAttribute ("user")CinemaUser cinemaUser) {
         return "/auth/register";
     }
 
     @PostMapping("/auth/signUp")
-    public String signUp(@ModelAttribute ("newUser")CinemaUser cinemaUser, HttpServletRequest request) {
+    public String signUp(@ModelAttribute ("user")CinemaUser cinemaUser, HttpServletRequest request) {
         cinemaUser.setRole(ERole.USER);
-        cinemaUserService.createCinemaUser(cinemaUser);
-        HttpSession session = request.getSession();
-        session.setAttribute("user", cinemaUserService.getCinemaUserByUserName(cinemaUser.getUserName()));
-        return "/auth/profile";
+        cinemaUser.setAuthHistory(new ArrayList<>());
+        cinemaUser.getAuthHistory().add(new AuthHistory(cinemaUser, "register", new Date().toString(), request.getRemoteAddr()));
+        boolean res = cinemaUserService.createCinemaUser(cinemaUser);
+        if (res) {
+            HttpSession session = request.getSession();
+            session.setAttribute("user", cinemaUserService.getCinemaUserByUserName(cinemaUser.getUserName()));
+            return "/auth/profile";
+        }
+        return "/auth/register";
     }
 
     @GetMapping("/auth/profile")
@@ -59,6 +69,6 @@ public class AuthController {
     public String logout(@ModelAttribute ("user")CinemaUser cinemaUser, HttpServletRequest req) {
         HttpSession session = req.getSession();
         session.removeAttribute("user");
-        return "/auth/login";
+        return "redirect:/auth/login";
     }
 }

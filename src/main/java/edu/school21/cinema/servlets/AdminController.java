@@ -56,9 +56,9 @@ public class AdminController {
                 model.addAttribute("movieHall", movieHallService.getMovieHallById(Long.parseLong(id)));
                 return "/admin/editHall";
             }
-            return "redirect:/admin/halls";
+            return "/admin/halls";
         } catch (Exception e) {
-            return "redirect:/admin/halls";
+            return "/admin/halls";
         }
     }
 
