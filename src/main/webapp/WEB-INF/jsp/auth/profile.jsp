@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -15,7 +16,32 @@
 </head>
 <body>
 <a href="/">На главную</a>
-<%=request.getSession().getAttribute("user")%>
+<table>
+    <tr>
+        <th>
+            Дата операции
+        </th>
+        <th>
+            Тип
+        </th>
+        <th>
+            Адрес
+        </th>
+    </tr>
+    <c:forEach items="${user.authHistory}" var="iterAuth">
+        <tr>
+            <td>
+                ${iterAuth.time}
+            </td>
+            <td>
+                ${iterAuth.type}
+            </td>
+            <td>
+                ${iterAuth.address}
+            </td>
+        </tr>
+    </c:forEach>
+</table>
 <form action="/auth/logout" method="POST">
     <input type="submit" value="Выйти">
 </form>

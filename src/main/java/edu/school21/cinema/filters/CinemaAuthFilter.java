@@ -20,11 +20,18 @@ public class CinemaAuthFilter implements Filter {
         String requestURI = ((HttpServletRequest) servletRequest).getRequestURI();
         CinemaUser cinemaUser = (CinemaUser) session.getAttribute("user");
         if (requestURI.contains("/auth")) {
-            if (cinemaUser == null && !requestURI.contains("/login") && !requestURI.contains("/register") &&
-                    !requestURI.contains("/signIn") && !requestURI.contains("/signOut"))
-                response.sendRedirect("/auth/login");
+            if (cinemaUser == null && !requestURI.contains("/login") && !requestURI.contains("/register") && !requestURI.contains("/signOut"))
+            {
+                if (requestURI.contains("/signUp"))
+                    response.sendRedirect("/auth/register");
+                else if (requestURI.contains("/signIn"))
+                    response.sendRedirect("/auth/profile");
+                else
+                    response.sendRedirect("/auth/login");
+            }
             else if (cinemaUser != null && !requestURI.contains("/profile") && !requestURI.contains("/logout"))
                 response.sendRedirect("/auth/profile");
+
         }
         else if (requestURI.contains("/admin")) {
             if ((cinemaUser == null || (cinemaUser.getRole().equals(ERole.USER))) && (requestURI.contains("/halls") ||

@@ -6,6 +6,7 @@ import edu.school21.cinema.models.roles.ERole;
 import edu.school21.cinema.services.CinemaUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,10 +29,11 @@ public class AuthController {
 
     @PostMapping("/auth/signIn")
     public String signIn(@ModelAttribute ("user")CinemaUser cinemaUser, HttpServletRequest request) {
-        if (cinemaUserService.authorize(cinemaUser)) {
+        if (cinemaUserService.authorize(cinemaUser, request)) {
             HttpSession session = request.getSession();
-            session.setAttribute("user", cinemaUserService.getCinemaUserByUserName(cinemaUser.getUserName()));
-            return "redirect:/auth/profile";
+            CinemaUser user =  cinemaUserService.getCinemaUserByUserName(cinemaUser.getUserName());
+            session.setAttribute("user", user);
+            return "/auth/profile";
         }
         return "/auth/login";
     }
@@ -46,8 +48,7 @@ public class AuthController {
         cinemaUser.setRole(ERole.USER);
         cinemaUser.setAuthHistory(new ArrayList<>());
         cinemaUser.getAuthHistory().add(new AuthHistory(cinemaUser, "register", new Date().toString(), request.getRemoteAddr()));
-        boolean res = cinemaUserService.createCinemaUser(cinemaUser);
-        if (res) {
+        if (cinemaUserService.createCinemaUser(cinemaUser)) {
             HttpSession session = request.getSession();
             session.setAttribute("user", cinemaUserService.getCinemaUserByUserName(cinemaUser.getUserName()));
             return "/auth/profile";
@@ -56,7 +57,9 @@ public class AuthController {
     }
 
     @GetMapping("/auth/profile")
-    public String profile() {
+    public String profile(Model model, HttpServletRequest request) {
+        CinemaUser cinemaUser = (CinemaUser) request.getSession().getAttribute("user");
+        model.addAttribute(cinemaUser);
         return "/auth/profile";
     }
 

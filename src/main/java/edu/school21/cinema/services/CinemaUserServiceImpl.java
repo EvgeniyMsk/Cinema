@@ -1,10 +1,13 @@
 package edu.school21.cinema.services;
 
+import edu.school21.cinema.models.AuthHistory;
 import edu.school21.cinema.models.CinemaUser;
 import edu.school21.cinema.repositories.CinemaUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,10 +41,18 @@ public class CinemaUserServiceImpl implements CinemaUserService {
     }
 
     @Override
-    public boolean authorize(CinemaUser cinemaUser) {
+    public boolean authorize(CinemaUser cinemaUser, HttpServletRequest request) {
         CinemaUser temp = cinemaUserRepository.getUserByUsername(cinemaUser.getUserName());
         if (temp != null)
-            return temp.getPassword().equals(cinemaUser.getPassword());
+        {
+            boolean isSuccess = temp.getPassword().equals(cinemaUser.getPassword());
+            if (isSuccess)
+            {
+                temp.getAuthHistory().add(new AuthHistory(temp, "authorize", new Date().toString(), request.getRemoteAddr()));
+                updateCinemaUser(temp);
+            }
+            return isSuccess;
+        }
         return false;
     }
 
