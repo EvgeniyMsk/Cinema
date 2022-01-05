@@ -21,7 +21,7 @@ import java.util.*;
 
 @Controller
 public class AuthController {
-    private String avatarPath = "C:/Users/User/Desktop/avatars";
+    private String avatarPath = "/Users/qsymond/Desktop/avatars";
 
     @Autowired
     private CinemaUserService cinemaUserService;
@@ -71,10 +71,10 @@ public class AuthController {
     @ResponseBody
     public byte[] downloadAvatar(HttpServletRequest request) throws IOException {
         CinemaUser cinemaUser = (CinemaUser) request.getSession().getAttribute("user");
-        File imagesDir = new File(avatarPath + cinemaUser.getId());
+        File imagesDir = new File(avatarPath + "/" + cinemaUser.getId());
         if (!imagesDir.exists())
             imagesDir.mkdir();
-        File image = new File(avatarPath + cinemaUser.getId());
+        File image = new File(avatarPath + "/" + cinemaUser.getId());
         if ((Objects.requireNonNull(image.listFiles()).length != 0)) {
             File[] files = image.listFiles();
             Arrays.sort(files, (f1, f2) -> Long.valueOf(f1.lastModified()).compareTo(f2.lastModified()));
@@ -95,7 +95,7 @@ public class AuthController {
                 { uploadDir.mkdir(); }
                 String uuidFile = UUID.nameUUIDFromBytes(file.getBytes()).toString();
                 String resultFileName = uuidFile + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-                file.transferTo(new File("/" + resultFileName));
+                file.transferTo(new File(avatarPath + "/" + cinemaUser.getId() + "/" + resultFileName));
         }
         return "/auth/profile";
     }

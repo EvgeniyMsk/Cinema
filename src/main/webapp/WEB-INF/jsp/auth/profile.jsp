@@ -22,7 +22,7 @@
 </form>
 </div>
 <div>
-    <img src="${pageContext.request.contextPath}/img/image.png">
+    <img src="/auth/profile/avatar" style="height: 100px; width: 150px;" onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/img/image.png';">
     <form method="post" action="/auth/profile/avatar" enctype="multipart/form-data">
         <input type="file" name="file" accept="image/*">
         <button type="submit">Загрузить</button>
