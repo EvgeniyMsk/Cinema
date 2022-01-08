@@ -21,6 +21,12 @@ public class CinemaDataConfig {
     @Value("${uploadPath}")
     private String path;
 
+    @Value("${avatarPath}")
+    private String avatarPath;
+
+    @Value("${messagesCount}")
+    private int messagesCount;
+
     @Bean()
     public EntityManagerFactory entityManagerFactory() {
         return Persistence.createEntityManagerFactory("CinemaUnit");
@@ -41,5 +47,15 @@ public class CinemaDataConfig {
     @Bean
     public String uploadPath() {
         return path;
+    }
+
+    @Bean
+    public String avatarPath() {
+        return avatarPath;
+    }
+
+    @Bean
+    public int messagesCount() {
+        return messagesCount;
     }
 }

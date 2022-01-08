@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <title>Title</title>
@@ -50,10 +51,12 @@
                 ${user.id}
             </td>
             <td>
-                ${user.role}
+                <c:forEach items="${user.roles}" var="iterRole">
+                    ${iterRole.name}
+                </c:forEach>
             </td>
             <td>
-                ${user.userName}
+                ${user.username}
             </td>
             <td>
                 ${user.password}

@@ -13,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -77,7 +75,7 @@ public class AdminController {
 
 //    Movies
     @GetMapping("/admin/films")
-    public String films(Model model, HttpServletRequest request) throws IOException {
+    public String films(Model model) throws IOException {
         model.addAttribute("movies", movieService.getAll());
         model.addAttribute("movie", new Movie());
         List<String> images = new ArrayList<>();
@@ -89,8 +87,6 @@ public class AdminController {
                 images.add(encodedString);
             }
         }
-        request.setAttribute("images", images);
-        request.setAttribute("movies", movieService.getAll());
         return "/admin/films";
     }
 
@@ -116,15 +112,13 @@ public class AdminController {
     }
 
     @GetMapping("/admin/films/{id}")
-    public String editMovies(@PathVariable("id") String id, Model model, HttpServletRequest request) {
+    public String editMovies(@PathVariable("id") String id, Model model) {
         try {
             if (movieService.getMovieById(Long.parseLong(id)) != null) {
                 model.addAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
-                request.setAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
                 if (movieService.getMovieById(Long.parseLong(id)).getPosterUrl() != null) {
                     byte[] fileContent = FileUtils.readFileToByteArray(new File(uploadPath + "/" + movieService.getMovieById(Long.parseLong(id)).getPosterUrl()));
                     String image = Base64.getEncoder().encodeToString(fileContent);
-                    request.setAttribute("image", image);
                 }
                 return "/admin/editFilm";
             }

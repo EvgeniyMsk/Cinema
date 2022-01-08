@@ -29,11 +29,13 @@ public class Movie {
     @OneToMany(mappedBy = "movie",cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonIgnore
     private List<CinemaSession> sessions;
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.MERGE, orphanRemoval = true)
+    @JsonIgnore
+    private List<ChatMessage> messages;
 
     public Movie() {
         this.hasImage = false;
     }
-
     public Movie(String title, Date dateOfRelease, int restrictions, String description) {
         this.title = title;
         this.dateOfRelease = dateOfRelease;
@@ -41,4 +43,6 @@ public class Movie {
         this.description = description;
         this.sessions = new ArrayList<>();
     }
+
+
 }

@@ -28,7 +28,7 @@ public class CinemaUserRepositoryImpl implements CinemaUserRepository {
     @Override
     public boolean createUser(CinemaUser cinemaUser) {
         for (CinemaUser i : getAll())
-            if (i.getUserName().equals(cinemaUser.getUserName()))
+            if (i.getUsername().equals(cinemaUser.getUsername()))
                 return false;
         entityManager.merge(cinemaUser);
         return true;
@@ -48,7 +48,7 @@ public class CinemaUserRepositoryImpl implements CinemaUserRepository {
     @Override
     public CinemaUser getUserByUsername(String username) {
         for (CinemaUser cinemaUser : getAll())
-            if (cinemaUser.getUserName().equals(username))
+            if (cinemaUser.getUsername().equals(username))
                 return cinemaUser;
         return null;
     }

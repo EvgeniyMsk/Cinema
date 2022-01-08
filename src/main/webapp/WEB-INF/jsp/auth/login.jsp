@@ -1,10 +1,14 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <title>Авторизация</title>
 </head>
 <body>
+<sec:authorize access="isAuthenticated()">
+    <% response.sendRedirect("/auth/profile"); %>
+</sec:authorize>
 <a href="/">На главную</a>
 <div>
     <p>
@@ -12,13 +16,13 @@
     </p>
 </div>
 <div>
-    <form:form action="/auth/signIn" method="post" modelAttribute="user">
-        <form:label path="userName">Логин</form:label>
-        <form:input path="userName"></form:input>
-        <form:label path="password">Пароль</form:label>
-        <form:input path="password" type="password"></form:input>
-        <form:button type="submit">Войти</form:button>
-    </form:form>
+    <form action="/auth/login" method="post">
+        <label for="username">Логин</label>
+        <input name="username" id="username">
+        <label for="password">Пароль</label>
+        <input name="password" type="password" id="password">
+        <button type="submit">Войти</button>
+    </form>
 </div>
 </body>
 </html>

@@ -4,7 +4,13 @@ import edu.school21.cinema.models.AuthHistory;
 import edu.school21.cinema.models.CinemaUser;
 import edu.school21.cinema.repositories.CinemaUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -14,6 +20,9 @@ import java.util.List;
 public class CinemaUserServiceImpl implements CinemaUserService {
     @Autowired
     private CinemaUserRepository cinemaUserRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<CinemaUser> getAll() {
@@ -42,10 +51,10 @@ public class CinemaUserServiceImpl implements CinemaUserService {
 
     @Override
     public boolean authorize(CinemaUser cinemaUser, HttpServletRequest request) {
-        CinemaUser temp = cinemaUserRepository.getUserByUsername(cinemaUser.getUserName());
+        CinemaUser temp = cinemaUserRepository.getUserByUsername(cinemaUser.getUsername());
         if (temp != null)
         {
-            boolean isSuccess = temp.getPassword().equals(cinemaUser.getPassword());
+            boolean isSuccess = bCryptPasswordEncoder.matches(cinemaUser.getPassword(), temp.getPassword());
             if (isSuccess)
             {
                 temp.getAuthHistory().add(new AuthHistory(temp, "authorize", new Date().toString(), request.getRemoteAddr()));
@@ -59,5 +68,14 @@ public class CinemaUserServiceImpl implements CinemaUserService {
     @Override
     public CinemaUser getCinemaUserByUserName(String username) {
         return cinemaUserRepository.getUserByUsername(username);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        CinemaUser cinemaUser = cinemaUserRepository.getUserByUsername(username);
+        if (cinemaUser == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return cinemaUser;
     }
 }
