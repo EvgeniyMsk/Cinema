@@ -1,7 +1,6 @@
 package edu.school21.cinema.config;
 
 import edu.school21.cinema.filters.CinemaEncodingFilter;
-import edu.school21.cinema.models.roles.ERole;
 import edu.school21.cinema.repositories.RoleRepository;
 import edu.school21.cinema.services.CinemaUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +51,8 @@ public class CinemaSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl("/auth/logout")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
                 .permitAll()
                 .logoutSuccessUrl("/");
         http.addFilterBefore(new CinemaEncodingFilter(), ChannelProcessingFilter.class);

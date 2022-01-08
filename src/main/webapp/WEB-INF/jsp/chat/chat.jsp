@@ -10,6 +10,7 @@
 <h1>Обсуждение фильма</h1>
 <script>
     let movieId = ${movie.id};
+    let cinemausername = '${cinemausername}';
 </script>
 <div>
     <table border="3">
@@ -56,27 +57,27 @@
         </tr>
     </table>
 </div>
-<div id="username-page">
-    <div class="username-page-container">
-        <h1 class="title">Type your username</h1>
-        <form id="usernameForm" name="usernameForm">
-            <div class="form-group">
-                <input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control" />
-            </div>
-            <div class="form-group">
-                <button type="submit" class="accent username-submit">Start Chatting</button>
-            </div>
-        </form>
-    </div>
-</div>
+<%--<div id="username-page">--%>
+<%--    <div class="username-page-container">--%>
+<%--        <h1 class="title">Type your username</h1>--%>
+<%--        <form id="usernameForm" name="usernameForm">--%>
+<%--            <div class="form-group">--%>
+<%--                <input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control" />--%>
+<%--            </div>--%>
+<%--            <div class="form-group">--%>
+<%--                <button type="submit" class="accent username-submit">Start Chatting</button>--%>
+<%--            </div>--%>
+<%--        </form>--%>
+<%--    </div>--%>
+<%--</div>--%>
 <div id="chat-page" class="hidden">
     <div class="chat-container">
         <div class="chat-header">
             <h2>Spring WebSocket Chat Demo</h2>
         </div>
-        <div class="connecting">
-            Connecting...
-        </div>
+<%--        <div class="connecting">--%>
+<%--            Connecting...--%>
+<%--        </div>--%>
         <ul id="messageArea">
         </ul>
         <form id="messageForm" name="messageForm">

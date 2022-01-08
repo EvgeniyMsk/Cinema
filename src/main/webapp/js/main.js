@@ -1,7 +1,7 @@
 'use strict';
-var usernamePage = document.querySelector('#username-page');
+// var usernamePage = document.querySelector('#username-page');
 var chatPage = document.querySelector('#chat-page');
-var usernameForm = document.querySelector('#usernameForm');
+// var usernameForm = document.querySelector('#usernameForm');
 var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
@@ -21,29 +21,29 @@ x.onload = function (){
     console.log(movieId);
     for (var i = 0; i < data.length; i++)
     {
-            var messageElement = document.createElement('li');
-            messageElement.classList.add('event-message');
-            var textElement = document.createElement('p');
-            var usernameText = document.createTextNode(data[i].sender);
-            var usernameElement = document.createElement('span');
-            usernameElement.appendChild(usernameText);
-            var messageText = document.createTextNode(data[i].content);
-            textElement.appendChild(messageText);
-            messageArea.appendChild(messageElement);
-            usernameElement.appendChild(usernameText);
-            messageElement.appendChild(usernameElement);
-            messageElement.appendChild(textElement);
-            messageArea.scrollTop = messageArea.scrollHeight;
+        var messageElement = document.createElement('li');
+        messageElement.classList.add('event-message');
+        var textElement = document.createElement('p');
+        var usernameText = document.createTextNode(data[i].sender);
+        var usernameElement = document.createElement('span');
+        usernameElement.appendChild(usernameText);
+        var messageText = document.createTextNode(data[i].content);
+        textElement.appendChild(messageText);
+        messageArea.appendChild(messageElement);
+        usernameElement.appendChild(usernameText);
+        messageElement.appendChild(usernameElement);
+        messageElement.appendChild(textElement);
+        messageArea.scrollTop = messageArea.scrollHeight;
     }
 }
 x.send(null);
 }
 
-
 function connect(event) {
-    username = document.querySelector('#name').value.trim();
+    // username = document.querySelector('#name').value.trim();
+    username = cinemausername;
     if(username) {
-        usernamePage.classList.add('hidden');
+        // usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
         var socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
@@ -57,7 +57,7 @@ function onConnected() {
     stompClient.send("/app/chat.addUser",
         {}, JSON.stringify({sender: username, type: 'JOIN'})
     )
-    connectingElement.classList.add('hidden');
+    // connectingElement.classList.add('hidden');
 }
 function onError(error) {
     connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
@@ -79,31 +79,33 @@ function sendMessage(event) {
 }
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
-    var messageElement = document.createElement('li');
-    if(message.type === 'JOIN') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' joined!';
-    } else if (message.type === 'LEAVE') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' left!';
-    } else {
-        messageElement.classList.add('chat-message');
-        var avatarElement = document.createElement('i');
-        var avatarText = document.createTextNode(message.sender[0]);
-        avatarElement.appendChild(avatarText);
-        avatarElement.style['background-color'] = getAvatarColor(message.sender);
-        messageElement.appendChild(avatarElement);
-        var usernameElement = document.createElement('span');
-        var usernameText = document.createTextNode(message.sender);
-        usernameElement.appendChild(usernameText);
-        messageElement.appendChild(usernameElement);
+    if (!((message.sender === cinemausername) && (message.type === 'JOIN'))) {
+        var messageElement = document.createElement('li');
+        if (message.type === 'JOIN') {
+            messageElement.classList.add('event-message');
+            message.content = message.sender + ' joined!';
+        } else if (message.type === 'LEAVE') {
+            messageElement.classList.add('event-message');
+            message.content = message.sender + ' left!';
+        } else {
+            messageElement.classList.add('chat-message');
+            var avatarElement = document.createElement('i');
+            var avatarText = document.createTextNode(message.sender[0]);
+            avatarElement.appendChild(avatarText);
+            avatarElement.style['background-color'] = getAvatarColor(message.sender);
+            messageElement.appendChild(avatarElement);
+            var usernameElement = document.createElement('span');
+            var usernameText = document.createTextNode(message.sender);
+            usernameElement.appendChild(usernameText);
+            messageElement.appendChild(usernameElement);
+        }
+        var textElement = document.createElement('p');
+        var messageText = document.createTextNode(message.content);
+        textElement.appendChild(messageText);
+        messageElement.appendChild(textElement);
+        messageArea.appendChild(messageElement);
+        messageArea.scrollTop = messageArea.scrollHeight;
     }
-    var textElement = document.createElement('p');
-    var messageText = document.createTextNode(message.content);
-    textElement.appendChild(messageText);
-    messageElement.appendChild(textElement);
-    messageArea.appendChild(messageElement);
-    messageArea.scrollTop = messageArea.scrollHeight;
 }
 function getAvatarColor(messageSender) {
     var hash = 0;
@@ -113,7 +115,8 @@ function getAvatarColor(messageSender) {
     var index = Math.abs(hash % colors.length);
     return colors[index];
 }
-usernameForm.addEventListener('submit', connect, true)
+// usernameForm.addEventListener('submit', connect, true)
 messageForm.addEventListener('submit', sendMessage, true)
 var testForm = document.querySelector('#testForm');
 document.addEventListener("DOMContentLoaded", loadMessages);
+document.addEventListener("DOMContentLoaded", connect)

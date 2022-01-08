@@ -34,6 +34,16 @@ public class AuthController {
     @Autowired
     RoleRepository roleRepository;
 
+    @GetMapping("/auth/login")
+    public String login(HttpServletRequest request) {
+        return "/auth/login";
+    }
+
+    @PostMapping("/auth/login")
+    public void addAuthHistory(HttpServletRequest request) {
+        System.out.println(request.getRemoteAddr());
+    }
+
     @GetMapping("/auth/register")
     public String register(@ModelAttribute ("user")CinemaUser cinemaUser) {
         return "/auth/register";
@@ -55,6 +65,16 @@ public class AuthController {
 
     @GetMapping("/auth/profile")
     public String profile(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+        CinemaUser cinemaUser = cinemaUserService.getCinemaUserByUserName(request.getUserPrincipal().getName());
+        try {
+            boolean isAddedHistory = (boolean) session.getAttribute("isAddedSession");
+        }
+        catch (Exception e) {
+            session.setAttribute("isAddedSession", true);
+            cinemaUser.getAuthHistory().add(new AuthHistory(cinemaUser, "authorize", new Date().toString(), request.getRemoteAddr()));
+            cinemaUserService.updateCinemaUser(cinemaUser);
+        }
         model.addAttribute("user", cinemaUserService.getCinemaUserByUserName(request.getUserPrincipal().getName()));
         return "/auth/profile";
     }

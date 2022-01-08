@@ -41,10 +41,11 @@ public class FilmsController {
     }
 
     @GetMapping("/films/{id}/chat")
-    public String goChat(@PathVariable("id") String id, Model model) {
+    public String goChat(@PathVariable("id") String id, Model model, HttpServletRequest request) {
         try {
             if (movieService.getMovieById(Long.parseLong(id)) != null) {
                 model.addAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
+                model.addAttribute("cinemausername", request.getUserPrincipal().getName());
                 return "/chat/chat";
             }
             return "redirect:/";
