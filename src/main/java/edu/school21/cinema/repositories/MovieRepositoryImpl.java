@@ -41,6 +41,7 @@ public class MovieRepositoryImpl implements MovieRepository{
         Movie temp = entityManager.find(Movie.class, movie.getId());
         if (temp != null) {
             movie.setSessions(temp.getSessions());
+            movie.setMessages(temp.getMessages());
             entityManager.merge(movie);
         }
     }

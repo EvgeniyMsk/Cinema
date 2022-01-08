@@ -57,7 +57,7 @@ public class CinemaUserServiceImpl implements CinemaUserService {
             boolean isSuccess = bCryptPasswordEncoder.matches(cinemaUser.getPassword(), temp.getPassword());
             if (isSuccess)
             {
-                temp.getAuthHistory().add(new AuthHistory(temp, "authorize", new Date().toString(), request.getRemoteAddr()));
+                temp.getAuthHistory().add(new AuthHistory(temp, "Авторизация", new Date().toString(), request.getRemoteAddr()));
                 updateCinemaUser(temp);
             }
             return isSuccess;

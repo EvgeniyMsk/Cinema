@@ -80,7 +80,7 @@ Sessions
             </c:forEach>
         </select>
         <label for="ticketCost">Цена билета</label>
-        <input type="text" id="ticketCost" name="ticketCost">
+        <input type="text" id="ticketCost" name="ticketCost" required>
         <button type="submit">Добавить</button>
     </form>
 </div>
