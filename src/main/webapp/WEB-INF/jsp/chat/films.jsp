@@ -12,12 +12,14 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
-Films
-<a href="/">На главную</a>
-<div class="movies">
-    <h1>Список фильмов</h1>
+<header>
+    <h1 class="header"><a class="header" href="/">На главную</a></h1>
+</header>
+<main>
+    <h1 class="main">Список фильмов</h1>
     <table border="3">
         <tr>
             <th>
@@ -53,7 +55,8 @@ Films
                     </c:if>
                 </td>
                 <td>
-                    <a href="/films/${iterMovie.id}/chat">${iterMovie.title}</a>
+                    <p>${iterMovie.title}</p>
+                    <a style="text-decoration: darkorange; color: darkred" href="/films/${iterMovie.id}/chat">Обсудить</a>
                 </td>
                 <td>
                         ${iterMovie.dateOfRelease.toLocaleString().split(" ")[0]}
@@ -67,6 +70,9 @@ Films
             </tr>
         </c:forEach>
     </table>
-</div>
+</main>
+<footer>
+    <h2 class="footer">Москва 2021</h2>
+</footer>
 </body>
 </html>

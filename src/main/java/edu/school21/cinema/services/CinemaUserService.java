@@ -18,5 +18,4 @@ public interface CinemaUserService extends UserDetailsService {
     boolean createCinemaUser(CinemaUser cinemaUser);
     void updateCinemaUser(CinemaUser cinemaUser);
     void deleteCinemaUser(CinemaUser cinemaUser);
-    boolean authorize(CinemaUser cinemaUser, HttpServletRequest request);
 }

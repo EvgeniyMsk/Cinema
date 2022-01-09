@@ -37,7 +37,7 @@ public class CinemaSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/auth/profile", "/auth/profile/**").hasAnyRole("ADMIN", "USER")
                 //Доступ разрешен всем пользователей
-                .antMatchers("/", "/img/**", "/js/**").permitAll()
+                .antMatchers("/", "/img/**", "/js/**", "/css/**", "/sessions/**", "/films", "/films/**/image").permitAll()
                 .antMatchers("/auth/register").permitAll()
                 //Все остальные страницы требуют аутентификации
                 .anyRequest().authenticated()

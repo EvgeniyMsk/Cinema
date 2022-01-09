@@ -11,40 +11,20 @@
 <html>
 <head>
     <title>Title</title>
-    <%
-//        List<String> images = (List<String>) request.getAttribute("images");
-//        int index = 0;
-    %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <style>
-        * {box-sizing: border-box;}
-        body{margin: 0;}
-        div {padding: 30px 0}
-        form {
-            position: relative;
-            width: 300px;
-            margin: 0 auto;
-        }
-        .d1 {background: #A3D0C3;}
-        .d1 input {
-            width: 100%;
-            height: 42px;
-            padding-left: 10px;
-            border: 2px solid #7BA7AB;
-            border-radius: 5px;
-            outline: none;
-            background: #F9F0DA;
-            color: #9E9C9C;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
-
+<header>
+    <h1 class="header"><a class="header" href="/">На главную</a></h1>
+</header>
+<main>
 <div class="col" id="main">
-    <div id="count">Найдено записей: </div>
+
     <div class="d1">
     <form>
-        <input type="text" id="search" placeholder="Введите поисковый запрос" style="width: 100%">
+        <label id="count" style="background-color: black; color: white; font-size: xx-large">Найдено записей: </label>
+        <input type="text" id="search" placeholder="Введите поисковый запрос" style="width: 30%; font-size: xx-large">
     </form>
     </div>
     <script>
@@ -74,6 +54,8 @@
                             td1.appendChild(document.createTextNode('Дата'));
                             td2.appendChild(document.createTextNode('Фильм'));
                             td3.appendChild(document.createTextNode('Постер'));
+                            table.border = '3';
+                            // table.style = 'margin-left: auto; margin-right: auto; text-align: center; color: black; background-color: darkgrey;';
                             for (var i = 0; i < msg.length; i++)
                             {
                                 var trr = table.insertRow();
@@ -119,5 +101,9 @@
     </script>
 </div>
 </div>
+</main>
+<footer>
+    <h2 class="footer">Москва 2021</h2>
+</footer>
 </body>
 </html>

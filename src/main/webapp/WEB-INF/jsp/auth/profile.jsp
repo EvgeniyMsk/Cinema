@@ -5,66 +5,67 @@
 <html>
 <head>
     <title>Title</title>
-    <style>
-        .form-test input {
-            font: 14px Arial;
-            border: none;
-            padding: 0;
-            background: #ffffff;
-            color: #00f;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
-<div>
-<a href="/">На главную</a>
-<form action="/auth/logout" method="POST">
-    <input type="submit" value="Выйти">
-</form>
-</div>
-<div>
-    <img src="/auth/profile/avatar" style="height: 100px; width: 150px;" onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/img/image.png';">
-    <form method="post" action="/auth/profile/avatar" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*">
-        <button type="submit">Загрузить</button>
-    </form>
-</div>
-<h1>Информация о пользователе</h1>
-<div>
+<header>
+    <table style="background-color: #181258">
+        <td width="85%">
+            <h1 class="header"><a class="header" href="/" style="margin-left: 10%">На главную</a></h1>
+        </td>
+        <td width="15%">
+            <form action="/auth/logout" method="POST">
+                <label for="logout" style="font-size: xx-large; color: white">Привет, ${user.username}!</label>
+                <input id="logout" type="submit" style="background-color: #181258;
+      border: none;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      cursor: pointer;" value="Выйти">
+            </form>
+        </td>
+    </table>
+
+
+</header>
+<main>
+    <h1 class="main">Информация о пользователе</h1>
     <table border="3">
         <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                Права доступа
-            </th>
-            <th>
-                Логин
-            </th>
-            <th>
-                Пароль
-            </th>
+            <th>ID</th>
+            <td>${user.id}</td>
         </tr>
         <tr>
-            <td>
-                ${user.id}
-            </td>
+            <th>Права доступа</th>
             <td>
                 <c:forEach items="${user.roles}" var="iterRole">
                     ${iterRole.name}
                 </c:forEach>
             </td>
-            <td>
-                ${user.username}
-            </td>
-            <td>
-                ${user.password}
+        </tr>
+        <tr>
+            <th>Логин</th>
+            <td>${user.username}</td>
+        </tr>
+        <tr>
+            <th>Пароль</th>
+            <td>${user.password}</td>
+        </tr>
+        <tr>
+            <th>Фото</th>
+            <td><img src="/auth/profile/avatar" style="height: 100px; width: 150px;" onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/img/image.png';">
+                <form method="post" action="/auth/profile/avatar" enctype="multipart/form-data">
+                    <input type="file" name="file" accept="image/*">
+                    <div>
+                    <button type="submit">Загрузить</button>
+                    </div>
+                </form>
             </td>
         </tr>
     </table>
-</div>
-<h1>История входов</h1>
+<h1 class="main">История входов</h1>
 <div>
     <table border="3">
         <tr>
@@ -93,6 +94,26 @@
         </c:forEach>
     </table>
 </div>
-
+<h1 class="main">Загруженные фото на аватар</h1>
+<div>
+    <table border="3">
+        <tr>
+            <th>
+                Ссылка
+            </th>
+        </tr>
+        <c:forEach items="${listFiles}" var="filesIter">
+            <tr>
+                <td>
+                    <a href="/auth/profile/photo/${filesIter}/show">${filesIter}</a>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</div>
+</main>
+<footer>
+    <h2 class="footer">Москва 2021</h2>
+</footer>
 </body>
 </html>

@@ -4,12 +4,21 @@
 <html>
 <head>
     <title>Редактирование кинозала</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
-<form:form method="post" action="/admin/halls/${movieHall.id}/update" modelAttribute="movieHall">
-    <form:label path="seatsCount">Количество мест</form:label>
+<header>
+    <h1 class="header"><a class="header" href="/">На главную</a></h1>
+</header>
+<main>
+<form:form method="post" action="/admin/halls/${movieHall.id}/update" modelAttribute="movieHall" cssStyle="margin-top: 10%">
+    <form:label cssStyle="background-color: darkgray" path="seatsCount">Количество мест</form:label>
     <form:input path="seatsCount"></form:input>
     <button type="submit">Обновить</button>
 </form:form>
+</main>
+<footer>
+    <h2 class="footer">Москва 2021</h2>
+</footer>
 </body>
 </html>

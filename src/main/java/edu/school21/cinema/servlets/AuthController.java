@@ -8,6 +8,7 @@ import edu.school21.cinema.services.CinemaUserService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class AuthController {
@@ -72,10 +74,11 @@ public class AuthController {
         }
         catch (Exception e) {
             session.setAttribute("isAddedSession", true);
-            cinemaUser.getAuthHistory().add(new AuthHistory(cinemaUser, "authorize", new Date().toString(), request.getRemoteAddr()));
+            cinemaUser.getAuthHistory().add(new AuthHistory(cinemaUser, "Авторизация", new Date().toString(), request.getRemoteAddr()));
             cinemaUserService.updateCinemaUser(cinemaUser);
         }
         model.addAttribute("user", cinemaUserService.getCinemaUserByUserName(request.getUserPrincipal().getName()));
+        model.addAttribute("listFiles", fileList(cinemaUser));
         return "/auth/profile";
     }
 
@@ -83,7 +86,7 @@ public class AuthController {
     @ResponseBody
     public byte[] downloadAvatar(Principal principal) throws IOException {
         CinemaUser cinemaUser = cinemaUserService.getCinemaUserByUserName(principal.getName());
-        return downloadAvatar(cinemaUser, avatarPath);
+        return downloadAvatar(cinemaUser);
     }
 
     @PostMapping("/auth/profile/avatar")
@@ -93,18 +96,43 @@ public class AuthController {
         return "redirect:/auth/profile";
     }
 
+    @GetMapping("/auth/profile/photo/{filename}")
+    @ResponseBody
+    public byte[] getOldAvatar(@PathVariable("filename") String filename, Principal principal) throws IOException {
+        CinemaUser cinemaUser = cinemaUserService.getCinemaUserByUserName(principal.getName());
+        return downloadImage(cinemaUser, filename);
+    }
+
+    @GetMapping("/auth/profile/photo/{filename}/show")
+    public String showOldAvatar(@PathVariable("filename") String filename) {
+        return "/auth/avatar";
+    }
+
     private void loadAvatar(MultipartFile file, CinemaUser cinemaUser) throws IOException {
         if (file.getBytes().length > 0) {
             File uploadDir = new File(avatarPath + "/" + cinemaUser.getId());
             if (!uploadDir.exists())
             { uploadDir.mkdir(); }
-            String uuidFile = UUID.nameUUIDFromBytes(file.getBytes()).toString();
+            String uuidFile = file.getName();
             String resultFileName = uuidFile + "." + FilenameUtils.getExtension(file.getOriginalFilename());
             file.transferTo(new File(avatarPath + "/" + cinemaUser.getId() + "/" + resultFileName));
         }
     }
 
-    private byte[] downloadAvatar(CinemaUser cinemaUser, String path) throws IOException {
+    private byte[] downloadImage(CinemaUser cinemaUser, String filename) throws IOException {
+        File imagesDir0 = new File(avatarPath);
+        if (!imagesDir0.exists())
+            imagesDir0.mkdir();
+        File imagesDir = new File(avatarPath + "/" + cinemaUser.getId());
+        if (!imagesDir.exists())
+            imagesDir.mkdir();
+        File image = new File(avatarPath + "/" + cinemaUser.getId() + "/" + filename);
+        if (image.exists())
+        return FileUtils.readFileToByteArray(image);
+        return null;
+    }
+
+    private byte[] downloadAvatar(CinemaUser cinemaUser) throws IOException {
         File imagesDir0 = new File(avatarPath);
         if (!imagesDir0.exists())
             imagesDir0.mkdir();
@@ -119,5 +147,23 @@ public class AuthController {
             return fileContent;
         }
         return null;
+    }
+
+    private List<String> fileList(CinemaUser cinemaUser) {
+        List<String> result = new ArrayList<>();
+        File imagesDir0 = new File(avatarPath);
+        if (!imagesDir0.exists())
+            imagesDir0.mkdir();
+        File imagesDir = new File(avatarPath + "/" + cinemaUser.getId());
+        if (!imagesDir.exists())
+            imagesDir.mkdir();
+        File image = new File(avatarPath + "/" + cinemaUser.getId());
+        if ((Objects.requireNonNull(image.listFiles()).length != 0)) {
+            File[] files = image.listFiles();
+            Arrays.sort(files, (f1, f2) -> Long.valueOf(f1.lastModified()).compareTo(f2.lastModified()));
+            for (File file : files)
+                result.add(file.getName());
+        }
+        return result;
     }
 }

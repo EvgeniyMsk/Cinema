@@ -13,10 +13,15 @@
 <html>
 <head>
     <title>Информация о сеансе</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
+<header>
+    <h1 class="header"><a class="header" href="/">На главную</a></h1>
+</header>
+<main>
 <div class="cinemaSessions">
-    <h1>Просмотр сеанса</h1>
+    <h1 class="main">Просмотр сеанса</h1>
     <table border="3">
         <tr>
             <th>
@@ -68,5 +73,9 @@
     </table>
 
 </div>
+</main>
+<footer>
+    <h2 class="footer">Москва 2021</h2>
+</footer>
 </body>
 </html>

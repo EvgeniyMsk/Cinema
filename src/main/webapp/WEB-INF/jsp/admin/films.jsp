@@ -5,12 +5,14 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
-Films
-<a href="/">На главную</a>
-<div class="movies">
-    <h1>Список фильмов</h1>
+<header>
+    <h1 class="header"><a class="header" href="/">На главную</a></h1>
+</header>
+<main>
+    <h1 class="main">Список фильмов</h1>
     <table border="3">
         <tr>
             <th>
@@ -70,21 +72,23 @@ Films
         </c:forEach>
     </table>
 
-</div>
-
-<div class="addMovies">
-    <form:form method="post" action="/admin/films" enctype="multipart/form-data" modelAttribute="movie">
-        <form:label path="title">Название</form:label>
-        <form:input path="title"></form:input>
-        <form:label path="dateOfRelease">Дата выпуска</form:label>
-        <input type="date" pattern="yyyy-MM-dd" name="releaseDate" required>
-        <form:label path="restrictions">Ограничения по возрасту</form:label>
-        <form:input path="restrictions"></form:input>
-        <form:label path="description">Описание</form:label>
-        <form:input path="description"></form:input>
-        <input type="file" name="file" accept="image/*">
-        <button type="submit">Добавить</button>
-    </form:form>
-</div>
+    <div class="addMovies">
+        <form:form method="post" action="/admin/films" enctype="multipart/form-data" modelAttribute="movie">
+            <form:label cssStyle="background-color: darkgray" path="title">Название</form:label>
+            <form:input path="title"></form:input>
+            <form:label cssStyle="background-color: darkgray" path="dateOfRelease">Дата выпуска</form:label>
+            <input type="date" pattern="yyyy-MM-dd" name="releaseDate" required>
+            <form:label cssStyle="background-color: darkgray" path="restrictions">Ограничения по возрасту</form:label>
+            <form:input path="restrictions"></form:input>
+            <form:label cssStyle="background-color: darkgray" path="description">Описание</form:label>
+            <form:input path="description"></form:input>
+            <input type="file" name="file" accept="image/*" style="background-color: darkgrey">
+            <button type="submit">Добавить</button>
+        </form:form>
+    </div>
+</main>
+<footer>
+    <h2 class="footer">Москва 2021</h2>
+</footer>
 </body>
 </html>

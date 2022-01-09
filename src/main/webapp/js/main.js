@@ -21,19 +21,31 @@ x.onload = function (){
     console.log(movieId);
     for (var i = 0; i < data.length; i++)
     {
-        var messageElement = document.createElement('li');
-        messageElement.classList.add('event-message');
-        var textElement = document.createElement('p');
-        var usernameText = document.createTextNode(data[i].sender);
-        var usernameElement = document.createElement('span');
-        usernameElement.appendChild(usernameText);
-        var messageText = document.createTextNode(data[i].content);
-        textElement.appendChild(messageText);
+        var messageElement = document.createElement('div');
+        messageElement.className = 'bubbleWrapper';
+
+        var container = document.createElement('div');
+        if (data[i].sender === cinemausername)
+            container.className = 'inlineContainer own';
+        else
+            container.className = 'inlineContainer';
+
+        var usernameText = document.createElement('label');
+        usernameText.textContent = data[i].sender;
+        if (data[i].sender === cinemausername)
+            usernameText.hidden = true;
+
+        var textElement = document.createElement('div');
+        if (data[i].sender === cinemausername)
+            textElement.className = 'ownBubble own';
+        else
+            textElement.className = 'otherBubble other';
+        textElement.textContent = data[i].content;
+
         messageArea.appendChild(messageElement);
-        usernameElement.appendChild(usernameText);
-        messageElement.appendChild(usernameElement);
-        messageElement.appendChild(textElement);
-        messageArea.scrollTop = messageArea.scrollHeight;
+        messageElement.appendChild(container);
+        container.appendChild(usernameText);
+        container.appendChild(textElement);
     }
 }
 x.send(null);
@@ -43,7 +55,6 @@ function connect(event) {
     // username = document.querySelector('#name').value.trim();
     username = cinemausername;
     if(username) {
-        // usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
         var socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
@@ -57,7 +68,6 @@ function onConnected() {
     stompClient.send("/app/chat.addUser",
         {}, JSON.stringify({sender: username, type: 'JOIN'})
     )
-    // connectingElement.classList.add('hidden');
 }
 function onError(error) {
     connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
@@ -79,44 +89,35 @@ function sendMessage(event) {
 }
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
-    if (!((message.sender === cinemausername) && (message.type === 'JOIN'))) {
-        var messageElement = document.createElement('li');
-        if (message.type === 'JOIN') {
-            messageElement.classList.add('event-message');
-            message.content = message.sender + ' joined!';
-        } else if (message.type === 'LEAVE') {
-            messageElement.classList.add('event-message');
-            message.content = message.sender + ' left!';
-        } else {
-            messageElement.classList.add('chat-message');
-            var avatarElement = document.createElement('i');
-            var avatarText = document.createTextNode(message.sender[0]);
-            avatarElement.appendChild(avatarText);
-            avatarElement.style['background-color'] = getAvatarColor(message.sender);
-            messageElement.appendChild(avatarElement);
-            var usernameElement = document.createElement('span');
-            var usernameText = document.createTextNode(message.sender);
-            usernameElement.appendChild(usernameText);
-            messageElement.appendChild(usernameElement);
-        }
-        var textElement = document.createElement('p');
-        var messageText = document.createTextNode(message.content);
-        textElement.appendChild(messageText);
-        messageElement.appendChild(textElement);
+    if (message.type === 'CHAT') {
+        var messageElement = document.createElement('div');
+        messageElement.className = 'bubbleWrapper';
+
+        var container = document.createElement('div');
+        if (message.sender === cinemausername)
+            container.className = 'inlineContainer own';
+        else
+            container.className = 'inlineContainer';
+
+        var usernameText = document.createElement('label');
+        usernameText.textContent = message.sender;
+        if (message.sender === cinemausername)
+            usernameText.hidden = true;
+
+        var textElement = document.createElement('div');
+        if (message.sender === cinemausername)
+            textElement.className = 'ownBubble own';
+        else
+            textElement.className = 'otherBubble other';
+        textElement.textContent = message.content;
         messageArea.appendChild(messageElement);
-        messageArea.scrollTop = messageArea.scrollHeight;
+        messageElement.appendChild(container);
+        container.appendChild(usernameText);
+        container.appendChild(textElement);
     }
+    chatPage.scrollTop = 99999;
 }
-function getAvatarColor(messageSender) {
-    var hash = 0;
-    for (var i = 0; i < messageSender.length; i++) {
-        hash = 31 * hash + messageSender.charCodeAt(i);
-    }
-    var index = Math.abs(hash % colors.length);
-    return colors[index];
-}
-// usernameForm.addEventListener('submit', connect, true)
+
 messageForm.addEventListener('submit', sendMessage, true)
-var testForm = document.querySelector('#testForm');
 document.addEventListener("DOMContentLoaded", loadMessages);
 document.addEventListener("DOMContentLoaded", connect)

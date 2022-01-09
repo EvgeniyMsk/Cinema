@@ -50,22 +50,6 @@ public class CinemaUserServiceImpl implements CinemaUserService {
     }
 
     @Override
-    public boolean authorize(CinemaUser cinemaUser, HttpServletRequest request) {
-        CinemaUser temp = cinemaUserRepository.getUserByUsername(cinemaUser.getUsername());
-        if (temp != null)
-        {
-            boolean isSuccess = bCryptPasswordEncoder.matches(cinemaUser.getPassword(), temp.getPassword());
-            if (isSuccess)
-            {
-                temp.getAuthHistory().add(new AuthHistory(temp, "Авторизация", new Date().toString(), request.getRemoteAddr()));
-                updateCinemaUser(temp);
-            }
-            return isSuccess;
-        }
-        return false;
-    }
-
-    @Override
     public CinemaUser getCinemaUserByUserName(String username) {
         return cinemaUserRepository.getUserByUsername(username);
     }
