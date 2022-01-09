@@ -73,34 +73,6 @@
             </div>
         </div>
     </form>
-
-<%--    <div id="chat-pg" class="chat" style="background-color: #9E9C9C">--%>
-<%--        <div id="chatter">--%>
-<%--            <div class="bubbleWrapper">--%>
-<%--                <label>Отправитель</label>--%>
-<%--                <div class="inlineContainer">--%>
-<%--                    <div class="otherBubble other">--%>
-<%--                        No ninjas!--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--            <div class="bubbleWrapper">--%>
-<%--                <div class="inlineContainer own">--%>
-<%--                    <div class="ownBubble own">--%>
-<%--                        The first rule of being a ninja is, 'Do no harm.'--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--    <form id="messageForm" name="messageForm">--%>
-<%--        <div class="form-group">--%>
-<%--            <div class="input-group clearfix">--%>
-<%--                <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>--%>
-<%--                <button type="submit" class="primary">Send</button>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </form>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script src="/js/main.js"></script>
