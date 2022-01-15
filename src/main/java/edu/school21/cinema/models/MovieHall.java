@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,8 +20,4 @@ public class MovieHall {
     @JsonIgnore
     @OneToMany(mappedBy = "movieHall", cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<CinemaSession> sessionList;
-    public MovieHall(int seatsCount) {
-        this.seatsCount = seatsCount;
-        this.sessionList = new ArrayList<>();
-    }
 }

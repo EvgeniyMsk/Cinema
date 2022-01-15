@@ -24,16 +24,20 @@ import java.util.*;
 
 @Controller
 public class AdminController {
-    @Autowired
-    private String uploadPath;
-    @Autowired
-    private MovieHallService movieHallService;
-    @Autowired
-    private MovieService movieService;
-    @Autowired
-    private CinemaSessionService cinemaSessionService;
+    private final String uploadPath;
+    private final MovieHallService movieHallService;
+    private final MovieService movieService;
+    private final CinemaSessionService cinemaSessionService;
 
-//    MovieHalls
+    @Autowired
+    public AdminController(String uploadPath, MovieHallService movieHallService, MovieService movieService, CinemaSessionService cinemaSessionService) {
+        this.uploadPath = uploadPath;
+        this.movieHallService = movieHallService;
+        this.movieService = movieService;
+        this.cinemaSessionService = cinemaSessionService;
+    }
+
+    //    MovieHalls
     @GetMapping("/admin/halls")
     public String halls(Model model) {
         model.addAttribute("movieHalls", movieHallService.getAll());
@@ -78,15 +82,6 @@ public class AdminController {
     public String films(Model model) throws IOException {
         model.addAttribute("movies", movieService.getAll());
         model.addAttribute("movie", new Movie());
-        List<String> images = new ArrayList<>();
-        for (Movie movie : movieService.getAll())
-        {
-            if (movie.getPosterUrl() != null) {
-                byte[] fileContent = FileUtils.readFileToByteArray(new File(uploadPath + "/" + movie.getPosterUrl()));
-                String encodedString = Base64.getEncoder().encodeToString(fileContent);
-                images.add(encodedString);
-            }
-        }
         return "/admin/films";
     }
 
@@ -116,10 +111,6 @@ public class AdminController {
         try {
             if (movieService.getMovieById(Long.parseLong(id)) != null) {
                 model.addAttribute("movie", movieService.getMovieById(Long.parseLong(id)));
-                if (movieService.getMovieById(Long.parseLong(id)).getPosterUrl() != null) {
-                    byte[] fileContent = FileUtils.readFileToByteArray(new File(uploadPath + "/" + movieService.getMovieById(Long.parseLong(id)).getPosterUrl()));
-                    String image = Base64.getEncoder().encodeToString(fileContent);
-                }
                 return "/admin/editFilm";
             }
             return "/error/error";

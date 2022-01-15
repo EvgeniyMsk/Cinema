@@ -4,24 +4,17 @@ import edu.school21.cinema.models.Movie;
 import edu.school21.cinema.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.security.Principal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.zip.DataFormatException;
-import java.util.zip.Deflater;
-import java.util.zip.Inflater;
 import java.util.List;
 
 @Service
 public class MovieServiceImpl implements MovieService {
-    public static final Logger LOG = LoggerFactory.getLogger(MovieServiceImpl.class);
+    private final MovieRepository movieRepository;
 
     @Autowired
-    private MovieRepository movieRepository;
+    public MovieServiceImpl(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
+    }
 
     @Override
     public List<Movie> getAll() {

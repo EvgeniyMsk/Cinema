@@ -1,5 +1,6 @@
-package edu.school21.cinema.config;
+package edu.school21.cinema.config.initializers;
 
+import edu.school21.cinema.config.CinemaWebMvcConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class CinemaApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {

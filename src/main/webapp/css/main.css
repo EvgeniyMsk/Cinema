@@ -19,7 +19,7 @@ div.main {
 
 a.main {
     color: aliceblue;
-    font-family: "Times New Roman";
+    font-family: "Times New Roman", serif;
     font-size: 300%;
     text-decoration: #A3D0C3;
     text-align:center;
@@ -41,9 +41,8 @@ table {
 
 footer {
     background-color: black;
-    /*position:fixed;*/
-    left:0px;
-    bottom:0px;
+    left:0;
+    bottom:0;
     width:100%;
 }
 
@@ -70,7 +69,7 @@ form {
 }
 
 * {
-    font-family: 'Avenir';
+    font-family: 'Avenir', serif;
 }
 
 .bubbleWrapper {

@@ -3,12 +3,10 @@ package edu.school21.cinema.servlets;
 import edu.school21.cinema.models.AuthHistory;
 import edu.school21.cinema.models.CinemaUser;
 import edu.school21.cinema.models.roles.ERole;
-import edu.school21.cinema.repositories.RoleRepository;
 import edu.school21.cinema.services.CinemaUserService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,24 +18,24 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class AuthController {
-    @Autowired
-    private String avatarPath;
+    private final String avatarPath;
+
+    private final CinemaUserService cinemaUserService;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private CinemaUserService cinemaUserService;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    RoleRepository roleRepository;
+    public AuthController(String avatarPath, CinemaUserService cinemaUserService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.avatarPath = avatarPath;
+        this.cinemaUserService = cinemaUserService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @GetMapping("/auth/login")
-    public String login(HttpServletRequest request) {
+    public String login() {
         return "/auth/login";
     }
 
@@ -142,9 +140,9 @@ public class AuthController {
         File image = new File(avatarPath + "/" + cinemaUser.getId());
         if ((Objects.requireNonNull(image.listFiles()).length != 0)) {
             File[] files = image.listFiles();
-            Arrays.sort(files, (f1, f2) -> Long.valueOf(f1.lastModified()).compareTo(f2.lastModified()));
-            byte[] fileContent = FileUtils.readFileToByteArray(files[files.length - 1]);
-            return fileContent;
+            assert files != null;
+            Arrays.sort(files, Comparator.comparingLong(File::lastModified));
+            return FileUtils.readFileToByteArray(files[files.length - 1]);
         }
         return null;
     }
@@ -160,7 +158,8 @@ public class AuthController {
         File image = new File(avatarPath + "/" + cinemaUser.getId());
         if ((Objects.requireNonNull(image.listFiles()).length != 0)) {
             File[] files = image.listFiles();
-            Arrays.sort(files, (f1, f2) -> Long.valueOf(f1.lastModified()).compareTo(f2.lastModified()));
+            assert files != null;
+            Arrays.sort(files, Comparator.comparingLong(File::lastModified));
             for (File file : files)
                 result.add(file.getName());
         }

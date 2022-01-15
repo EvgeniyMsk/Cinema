@@ -2,7 +2,6 @@ package edu.school21.cinema.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @Data

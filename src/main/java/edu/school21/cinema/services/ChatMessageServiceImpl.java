@@ -9,8 +9,12 @@ import java.util.List;
 
 @Service
 public class ChatMessageServiceImpl implements ChatMessageService {
+    private final ChatMessageRepository chatMessageRepository;
+
     @Autowired
-    private ChatMessageRepository chatMessageRepository;
+    public ChatMessageServiceImpl(ChatMessageRepository chatMessageRepository) {
+        this.chatMessageRepository = chatMessageRepository;
+    }
 
     @Override
     public List<ChatMessage> getAll() {

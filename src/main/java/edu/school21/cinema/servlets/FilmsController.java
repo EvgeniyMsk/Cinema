@@ -16,11 +16,15 @@ import java.io.IOException;
 
 @Controller
 public class FilmsController {
-    @Autowired
-    private String uploadPath;
+    private final String uploadPath;
+
+    private final MovieService movieService;
 
     @Autowired
-    private MovieService movieService;
+    public FilmsController(String uploadPath, MovieService movieService) {
+        this.uploadPath = uploadPath;
+        this.movieService = movieService;
+    }
 
     @GetMapping("/films")
     public String films(Model model, HttpServletRequest request) {

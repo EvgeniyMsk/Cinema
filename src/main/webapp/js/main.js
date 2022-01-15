@@ -46,7 +46,6 @@ x.send(null);
 }
 
 function connect(event) {
-    // username = document.querySelector('#name').value.trim();
     username = cinemausername;
     if(username) {
         chatPage.classList.remove('hidden');
@@ -58,7 +57,6 @@ function connect(event) {
 }
 function onConnected() {
     stompClient.subscribe('/topic/public', onMessageReceived);
-    // Tell your username to the server
     stompClient.send("/app/chat.addUser",
         {}, JSON.stringify({sender: username, type: 'JOIN'})
     )

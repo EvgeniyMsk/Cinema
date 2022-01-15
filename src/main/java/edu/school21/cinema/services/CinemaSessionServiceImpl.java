@@ -9,8 +9,12 @@ import java.util.List;
 
 @Service
 public class CinemaSessionServiceImpl implements CinemaSessionService {
+    private final CinemaSessionRepository cinemaSessionRepository;
+
     @Autowired
-    private CinemaSessionRepository cinemaSessionRepository;
+    public CinemaSessionServiceImpl(CinemaSessionRepository cinemaSessionRepository) {
+        this.cinemaSessionRepository = cinemaSessionRepository;
+    }
 
     @Override
     public List<CinemaSession> getAll() {

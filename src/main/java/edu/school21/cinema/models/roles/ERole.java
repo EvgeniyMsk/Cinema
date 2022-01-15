@@ -6,9 +6,11 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "erole", columnNames = {"name"})})
 public class ERole implements GrantedAuthority {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     @ManyToMany(mappedBy = "roles")

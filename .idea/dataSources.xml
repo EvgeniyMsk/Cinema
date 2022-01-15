@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="CinemaUnit/Hibernate" uuid="b0f26d91-e77e-459b-a5d1-eee26cb41d9c">
+    <data-source source="LOCAL" name="cinema@localhost" uuid="fadca0b1-d582-4516-ba7e-a9a02991a8fc">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>Hibernate
-
-C:/Users/User/Desktop/Cinema/src/main/resources/META-INF/persistence.xml</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://94.103.80.86:5432/cinema</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/cinema</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

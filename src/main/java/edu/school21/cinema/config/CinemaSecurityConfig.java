@@ -1,7 +1,6 @@
 package edu.school21.cinema.config;
 
 import edu.school21.cinema.filters.CinemaEncodingFilter;
-import edu.school21.cinema.repositories.RoleRepository;
 import edu.school21.cinema.services.CinemaUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,9 +19,6 @@ public class CinemaSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CinemaUserService cinemaUserService;
 
-    @Autowired
-    RoleRepository roleRepository;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -31,8 +27,6 @@ public class CinemaSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .disable()
                 .authorizeRequests()
-                //Доступ только для не зарегистрированных пользователей
-//                .antMatchers("/auth/register").not().authenticated()
                 //Доступ только для пользователей с ролью Администратор
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/auth/profile", "/auth/profile/**").hasAnyRole("ADMIN", "USER")

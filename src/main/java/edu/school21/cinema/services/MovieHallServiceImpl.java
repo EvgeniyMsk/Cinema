@@ -9,8 +9,12 @@ import java.util.List;
 
 @Service
 public class MovieHallServiceImpl implements MovieHallService{
+    private final MovieHallRepository movieHallRepository;
+
     @Autowired
-    private MovieHallRepository movieHallRepository;
+    public MovieHallServiceImpl(MovieHallRepository movieHallRepository) {
+        this.movieHallRepository = movieHallRepository;
+    }
 
     @Override
     public List<MovieHall> getAll() {

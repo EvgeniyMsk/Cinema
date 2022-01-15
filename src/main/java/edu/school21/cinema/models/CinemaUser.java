@@ -1,16 +1,11 @@
 package edu.school21.cinema.models;
 
 import edu.school21.cinema.models.roles.ERole;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 

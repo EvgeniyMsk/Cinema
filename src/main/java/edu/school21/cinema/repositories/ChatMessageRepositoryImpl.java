@@ -2,7 +2,6 @@ package edu.school21.cinema.repositories;
 
 import edu.school21.cinema.models.ChatMessage;
 import edu.school21.cinema.models.Movie;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
