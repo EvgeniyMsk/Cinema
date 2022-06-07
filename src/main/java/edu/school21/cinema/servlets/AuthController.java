@@ -88,7 +88,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/profile/avatar")
-    public String uploadAvatar(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+    public String uploadAvatar(@RequestParam("image") MultipartFile file, Principal principal) throws IOException {
         CinemaUser cinemaUser = cinemaUserService.getCinemaUserByUserName(principal.getName());
         loadAvatar(file, cinemaUser);
         return "redirect:/auth/profile";
@@ -111,7 +111,7 @@ public class AuthController {
             File uploadDir = new File(avatarPath + "/" + cinemaUser.getId());
             if (!uploadDir.exists())
             { uploadDir.mkdir(); }
-            String uuidFile = file.getName();
+            String uuidFile = FilenameUtils.getBaseName(file.getOriginalFilename());
             String resultFileName = uuidFile + "." + FilenameUtils.getExtension(file.getOriginalFilename());
             file.transferTo(new File(avatarPath + "/" + cinemaUser.getId() + "/" + resultFileName));
         }

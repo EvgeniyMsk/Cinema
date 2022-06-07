@@ -54,7 +54,7 @@
             <th>Фото</th>
             <td><img src="/auth/profile/avatar" style="height: 100px; width: 150px;" onerror="this.onerror=null;this.src='/img/image.png';">
                 <form method="post" action="/auth/profile/avatar" enctype="multipart/form-data">
-                    <input type="file" name="file" accept="image/*">
+                    <input type="file" name="image" accept="image/*">
                     <div>
                     <button type="submit">Загрузить</button>
                     </div>
