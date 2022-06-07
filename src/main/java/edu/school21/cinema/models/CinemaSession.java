@@ -1,13 +1,14 @@
 package edu.school21.cinema.models;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class CinemaSession {
@@ -16,10 +17,10 @@ public class CinemaSession {
     private Long id;
     private LocalDateTime date;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     private MovieHall movieHall;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     private Movie movie;
     private int ticketCost;
 
@@ -28,5 +29,13 @@ public class CinemaSession {
         this.movie = movie;
         this.date = date;
         this.ticketCost = ticketCost;
+    }
+
+    public String getDateHtml() {
+        return date.toString().replace('T', ' ');
+    }
+
+    public String getDateToEdit() {
+        return date.toString();
     }
 }

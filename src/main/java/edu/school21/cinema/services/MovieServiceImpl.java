@@ -4,6 +4,7 @@ import edu.school21.cinema.models.Movie;
 import edu.school21.cinema.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.util.List;
 

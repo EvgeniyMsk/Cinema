@@ -1,15 +1,4 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="edu.school21.cinema.models.CinemaSession" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: qsymond
-  Date: 21.11.2021
-  Time: 14:30
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%request.setCharacterEncoding("UTF-8");%>
+<#import "/spring.ftl" as spring/>
 <html>
 <head>
     <title>Информация о сеансе</title>
@@ -55,12 +44,12 @@
                         ${cinemaSession.movie.title}
                     </div>
                     <div>
-                        <c:if test="${cinemaSession.movie.hasImage == true}">
+                        <#if cinemaSession.movie.hasImage == true>
                             <img src='/films/${cinemaSession.movie.id}/image' style="height: 100px; width: 150px;">
-                        </c:if>
-                        <c:if test="${cinemaSession.movie.hasImage == false}">
+                        </#if>
+                        <#if cinemaSession.movie.hasImage == false>
                             <img src="${pageContext.request.contextPath}/img/image.png" style="height: 100px; width: 150px;">
-                        </c:if>
+                        </#if>
                     </div>
                     <div>
                         ${cinemaSession.movie.description}
@@ -75,7 +64,7 @@
 </div>
 </main>
 <footer>
-    <h2 class="footer">Москва 2021</h2>
+    <h2 class="footer">Москва 2022</h2>
 </footer>
 </body>
 </html>

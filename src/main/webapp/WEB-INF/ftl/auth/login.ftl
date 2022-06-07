@@ -1,13 +1,8 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<#import "/spring.ftl" as spring/>
 <html>
 <head>
     <title>Авторизация</title>
     <link rel="stylesheet" type="text/css" href="/css/login.css">
-    <sec:authorize access="isAuthenticated()">
-        <% response.sendRedirect("/auth/profile"); %>
-    </sec:authorize>
 </head>
 <body>
 <header>
@@ -34,7 +29,7 @@
 
 </main>
 <footer>
-    <h2 class="footer">Москва 2021</h2>
+    <h2 class="footer">Москва 2022</h2>
 </footer>
 </body>
 </html>

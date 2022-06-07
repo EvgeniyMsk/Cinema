@@ -1,13 +1,4 @@
-<%@ page import="java.util.List" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: qsymond
-  Date: 24.11.2021
-  Time: 22:32
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<#import "/spring.ftl" as spring/>
 <html>
 <head>
     <title>Title</title>
@@ -69,7 +60,7 @@
                                 href.innerText = msg[i].movieDao.name;
                                 image.src = '/films/' + msg[i].movieDao.id + '/image';
                                 image.onerror = function () {
-                                    image.src = '${pageContext.request.contextPath}/img/image.png';
+                                    image.src = '/img/image.png';
                                 }
                                 image.style.width = '150px';
                                 image.style.height = '100px';
@@ -100,10 +91,9 @@
         });
     </script>
 </div>
-</div>
 </main>
 <footer>
-    <h2 class="footer">Москва 2021</h2>
+    <h2 class="footer">Москва 2022</h2>
 </footer>
 </body>
 </html>

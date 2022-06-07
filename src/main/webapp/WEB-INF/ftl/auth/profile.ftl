@@ -1,7 +1,4 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<#import "/spring.ftl" as spring/>
 <html>
 <head>
     <title>Title</title>
@@ -40,9 +37,9 @@
         <tr>
             <th>Права доступа</th>
             <td>
-                <c:forEach items="${user.roles}" var="iterRole">
+                <#list user.roles as iterRole>
                     ${iterRole.name}
-                </c:forEach>
+                </#list>
             </td>
         </tr>
         <tr>
@@ -55,7 +52,7 @@
         </tr>
         <tr>
             <th>Фото</th>
-            <td><img src="/auth/profile/avatar" style="height: 100px; width: 150px;" onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/img/image.png';">
+            <td><img src="/auth/profile/avatar" style="height: 100px; width: 150px;" onerror="this.onerror=null;this.src='/img/image.png';">
                 <form method="post" action="/auth/profile/avatar" enctype="multipart/form-data">
                     <input type="file" name="file" accept="image/*">
                     <div>
@@ -79,7 +76,7 @@
                 Адрес
             </th>
         </tr>
-        <c:forEach items="${user.authHistory}" var="iterAuth">
+        <#list user.authHistory as iterAuth>
             <tr>
                 <td>
                         ${iterAuth.time}
@@ -91,7 +88,7 @@
                         ${iterAuth.address}
                 </td>
             </tr>
-        </c:forEach>
+        </#list>
     </table>
 </div>
 <h1 class="main">Загруженные фото на аватар</h1>
@@ -102,18 +99,18 @@
                 Ссылка
             </th>
         </tr>
-        <c:forEach items="${listFiles}" var="filesIter">
+        <#list listFiles as filesIter>
             <tr>
                 <td>
                     <a href="/auth/profile/photo/${filesIter}/show">${filesIter}</a>
                 </td>
             </tr>
-        </c:forEach>
+        </#list>
     </table>
 </div>
 </main>
 <footer>
-    <h2 class="footer">Москва 2021</h2>
+    <h2 class="footer">Москва 2022</h2>
 </footer>
 </body>
 </html>

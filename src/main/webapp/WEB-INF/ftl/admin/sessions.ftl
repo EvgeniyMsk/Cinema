@@ -1,7 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%request.setCharacterEncoding("UTF-8");%>
+<#import "/spring.ftl" as spring/>
 <html>
 <head>
     <title>Title</title>
@@ -35,31 +32,31 @@
                     Редактировать
                 </th>
             </tr>
-            <c:forEach items="${cinemaSessions}" var="iterCinemaSession">
+            <#list cinemaSessions as iterCinemaSession>
                 <tr>
                     <td>
-                            ${iterCinemaSession.id}
+                        ${iterCinemaSession.id}
                     </td>
                     <td>
-                            ${iterCinemaSession.date.toLocalDate()} ${iterCinemaSession.date.toLocalTime()}
+                        ${iterCinemaSession.getDateHtml()}
                     </td>
                     <td>
-                        Зал №${iterCinemaSession.movieHall.id}, ${iterCinemaSession.movieHall.seatsCount} посадочных мест
+                        Кинозал №${iterCinemaSession.movieHall.id}, ${iterCinemaSession.movieHall.seatsCount} посадочных мест
                     </td>
                     <td>
-                            ${iterCinemaSession.movie.title}
+                        ${iterCinemaSession.movie.title}
                     </td>
                     <td>
-                            ${iterCinemaSession.ticketCost}
+                        ${iterCinemaSession.ticketCost}
                     </td>
                     <td>
                         <a href="/admin/sessions/${iterCinemaSession.id}">Редактировать</a>
-                        <form:form method="post" action="/admin/sessions/${iterCinemaSession.id}/delete">
-                            <input type="submit" value="Удалить">
-                        </form:form>
+                        <form method="post" action="/admin/sessions/${iterCinemaSession.id}/delete">
+                            <button type="submit">Удалить</button>
+                        </form>
                     </td>
                 </tr>
-            </c:forEach>
+            </#list>
         </table>
 
     </div>
@@ -69,17 +66,15 @@
             <input id="date" type="datetime-local" pattern="yyyy-MM-dd, HH:mm" name="sessionDateTime" required>
             <label style="background-color: darkgray" for="movieHall">Кинозал</label>
             <select id="movieHall" name="movieHallId">
-                <c:forEach items="${movieHalls}" var="iterMovieHall">
-                    <option value="${iterMovieHall.id}">
-                        Зал №${iterMovieHall.id}, ${iterMovieHall.seatsCount} посадочных мест</option>
-                </c:forEach>
+                <#list movieHalls as iterMovieHall>
+                    <option value="${iterMovieHall.id}"><@spring.messageText "cinemaHallforSession" "Cinema hall"></@spring.messageText> №${iterMovieHall.id}, ${iterMovieHall.seatsCount} <@spring.messageText "seatsCount" "Count of seats"></@spring.messageText></option>
+                </#list>
             </select>
             <label style="background-color: darkgray" for="movie">Фильм</label>
             <select id="movie" name="movieId">
-                <c:forEach items="${movies}" var="iterMovie">
-                    <option value="${iterMovie.id}">
-                            ${iterMovie.title}</option>
-                </c:forEach>
+                <#list movies as iterMovie>
+                    <option value="${iterMovie.id}">${iterMovie.title}</option>
+                </#list>
             </select>
             <label style="background-color: darkgray" for="ticketCost">Цена билета</label>
             <input type="text" id="ticketCost" name="ticketCost" required>
@@ -88,7 +83,7 @@
     </div>
 </main>
 <footer>
-    <h2 class="footer">Москва 2021</h2>
+    <h2 class="footer">Москва 2022</h2>
 </footer>
 </body>
 </html>

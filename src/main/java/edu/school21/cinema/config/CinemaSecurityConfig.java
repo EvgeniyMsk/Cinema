@@ -1,6 +1,7 @@
 package edu.school21.cinema.config;
 
 import edu.school21.cinema.filters.CinemaEncodingFilter;
+import edu.school21.cinema.filters.LoginPageFilter;
 import edu.school21.cinema.services.CinemaUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -29,10 +31,10 @@ public class CinemaSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //Доступ только для пользователей с ролью Администратор
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/auth/profile", "/auth/profile/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/auth/profile", "/auth/profile/**").authenticated()
                 //Доступ разрешен всем пользователей
                 .antMatchers("/", "/img/**", "/js/**", "/css/**", "/sessions/**", "/films", "/films/**/image").permitAll()
-                .antMatchers("/auth/register").permitAll()
+                .antMatchers("/auth/register", "/auth/login").permitAll()
                 //Все остальные страницы требуют аутентификации
                 .anyRequest().authenticated()
                 .and()
@@ -50,6 +52,7 @@ public class CinemaSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .logoutSuccessUrl("/");
         http.addFilterBefore(new CinemaEncodingFilter(), ChannelProcessingFilter.class);
+        http.addFilterBefore(new LoginPageFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

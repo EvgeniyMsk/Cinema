@@ -5,6 +5,7 @@ import edu.school21.cinema.models.Movie;
 import edu.school21.cinema.repositories.ChatMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
